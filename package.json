@@ -10,6 +10,9 @@
     "author": "bortolettojoaog",
     "license": "ISC",
     "devDependencies": {
-        "eslint": "^9.15.0"
+        "@eslint/js": "^9.15.0",
+        "eslint": "^9.15.0",
+        "globals": "^15.12.0",
+        "typescript-eslint": "^8.15.0"
     }
 }
