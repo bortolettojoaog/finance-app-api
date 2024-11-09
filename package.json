@@ -6,7 +6,8 @@
     "type": "module",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc"
+        "build": "tsc",
+        "postinstall": "npx husky install"
     },
     "author": "bortolettojoaog",
     "license": "ISC",
@@ -16,6 +17,8 @@
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.2.1",
         "globals": "^15.12.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.2.10",
         "prettier": "^3.3.3",
         "typescript": "^5.6.3",
         "typescript-eslint": "^8.15.0"
