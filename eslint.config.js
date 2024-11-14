@@ -1,12 +1,31 @@
 import pluginJs from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
+import prettierConfig from 'eslint-config-prettier';
+import prettier from 'eslint-plugin-prettier';
 import globals from 'globals';
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import('eslint').Linter.FlatConfig[]} */
 export default [
     {
-        files: ['**/*.{js,mjs,cjs,ts,tsx}'],
+        files: ['**/*.{js,mjs,cjs}'],
+        languageOptions: {
+            globals: globals.browser,
+            parserOptions: {
+                ecmaVersion: 2021,
+            },
+        },
+        plugins: {
+            prettier: prettier,
+        },
+        rules: {
+            ...pluginJs.configs.recommended.rules,
+            ...prettierConfig.rules,
+            'prettier/prettier': 'error',
+        },
+    },
+    {
+        files: ['**/*.{ts,tsx}'],
         languageOptions: {
             globals: globals.browser,
             parser: tsParser,
@@ -19,7 +38,6 @@ export default [
             prettier: prettier,
         },
         rules: {
-            ...pluginJs.configs.recommended.rules,
             ...tseslint.configs.recommended.rules,
             ...prettierConfig.rules,
             'prettier/prettier': 'error',
