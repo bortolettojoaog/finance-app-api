@@ -10,7 +10,6 @@ const pool: pg.Pool = new Pool({
     host: process.env.POSTGRES_HOST,
 });
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const PostgresHelper = {
     query: async (query: string, params: any[]): Promise<any[]> => {
         const client: pg.PoolClient = await pool.connect();
