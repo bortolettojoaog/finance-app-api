@@ -2,7 +2,7 @@ import pg from 'pg';
 
 const { Pool } = pg;
 
-const pool: pg.Pool = new Pool({
+export const pool: pg.Pool = new Pool({
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     port: Number(process.env.POSTGRES_PORT),
