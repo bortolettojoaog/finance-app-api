@@ -1,3 +1,4 @@
+import validator from 'validator';
 import { badRequest } from './http';
 
 export const invalidUserIdResponse = () => {
@@ -32,4 +33,12 @@ export const allFieldAreEmptyResponse = () => {
 
 export const someFieldNotAllowedResponse = () => {
     return badRequest('Some provided fields are not allowed for update');
+};
+
+export const checkIfPasswordIsValid = (password: string): boolean => {
+    return password.length >= 6;
+};
+
+export const checkIfEmailIsValid = (email: string): boolean => {
+    return validator.isEmail(email);
 };
