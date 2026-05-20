@@ -4,7 +4,15 @@ import { EmailAlreadyInUseError } from '../errors/user';
 import { DTOUser } from '../types/user/dto-user';
 import { FormUpdateUserParams } from '../types/user/form-update-user';
 import { UpdateUserUseCase } from '../use-cases/update-user';
-import { badRequest, internalServerError, ok } from './helpers';
+import { internalServerError, ok } from './helpers/http';
+import {
+    allFieldAreEmptyResponse,
+    emailAlreadyInUseResponse,
+    invalidEmailResponse,
+    invalidPasswordResponse,
+    invalidUserIdResponse,
+    someFieldNotAllowedResponse,
+} from './helpers/user';
 
 export class UpdateUserController {
     async execute(request: Request): Promise<DTOUser> {
@@ -13,14 +21,11 @@ export class UpdateUserController {
 
             const isValidUUID = validator.isUUID(userId);
 
-            if (!isValidUUID) return badRequest('Invalid user ID format');
+            if (!isValidUUID) return invalidUserIdResponse();
 
             const allFieldsAreEmpty = Object.keys(request.body).length === 0;
 
-            if (allFieldsAreEmpty)
-                return badRequest(
-                    'At least one field must be provided for update',
-                );
+            if (allFieldsAreEmpty) return allFieldAreEmptyResponse();
 
             const updateUserParams = request.body as FormUpdateUserParams;
 
@@ -35,29 +40,18 @@ export class UpdateUserController {
                 (field) => !allowedFields.includes(field),
             );
 
-            if (isSomeFieldNotAllowed)
-                return badRequest(
-                    'Some provided fields are not allowed for update',
-                );
+            if (isSomeFieldNotAllowed) return someFieldNotAllowedResponse();
 
             if (updateUserParams.password) {
                 const isPasswordValid = updateUserParams.password.length >= 6;
 
-                if (!isPasswordValid) {
-                    return badRequest(
-                        'Password must be at least 6 characters long',
-                    );
-                }
+                if (!isPasswordValid) return invalidPasswordResponse();
             }
 
             if (updateUserParams.email) {
                 const isEmailValid = validator.isEmail(updateUserParams.email);
 
-                if (!isEmailValid) {
-                    return badRequest(
-                        'Invalid email format. Please provide a valid email address.',
-                    );
-                }
+                if (!isEmailValid) return invalidEmailResponse();
             }
 
             const updateUserUseCase = new UpdateUserUseCase();
@@ -71,9 +65,8 @@ export class UpdateUserController {
         } catch (error) {
             console.error('Error updating user:', error);
 
-            if (error instanceof EmailAlreadyInUseError) {
-                return badRequest(error.message);
-            }
+            if (error instanceof EmailAlreadyInUseError)
+                return emailAlreadyInUseResponse(error.message);
 
             return internalServerError();
         }

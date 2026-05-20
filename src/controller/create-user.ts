@@ -4,7 +4,12 @@ import { EmailAlreadyInUseError } from '../errors/user';
 import { DTOUser } from '../types/user/dto-user';
 import { FormCreateUserParams } from '../types/user/form-create-user';
 import { CreateUserUseCase } from '../use-cases/create-user';
-import { badRequest, created, internalServerError } from './helpers';
+import { badRequest, created, internalServerError } from './helpers/http';
+import {
+    emailAlreadyInUseResponse,
+    invalidEmailResponse,
+    invalidPasswordResponse,
+} from './helpers/user';
 
 export class CreateUserController {
     async execute(httpRequest: Request): Promise<DTOUser> {
@@ -30,19 +35,11 @@ export class CreateUserController {
 
             const isPasswordValid = formCreateUserParams.password.length >= 6;
 
-            if (!isPasswordValid) {
-                return badRequest(
-                    'Password must be at least 6 characters long',
-                );
-            }
+            if (!isPasswordValid) return invalidPasswordResponse();
 
             const isEmailValid = validator.isEmail(formCreateUserParams.email);
 
-            if (!isEmailValid) {
-                return badRequest(
-                    'Invalid email format. Please provide a valid email address.',
-                );
-            }
+            if (!isEmailValid) return invalidEmailResponse();
 
             const createUserUseCase = new CreateUserUseCase();
 
@@ -53,9 +50,8 @@ export class CreateUserController {
         } catch (error) {
             console.error('Error creating user:', error);
 
-            if (error instanceof EmailAlreadyInUseError) {
-                return badRequest(error.message);
-            }
+            if (error instanceof EmailAlreadyInUseError)
+                return emailAlreadyInUseResponse(error.message);
 
             return internalServerError();
         }
