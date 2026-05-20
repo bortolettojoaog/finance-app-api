@@ -1,14 +1,13 @@
 import { Request } from 'express';
-import validator from 'validator';
-import { EmailAlreadyInUseError } from '../errors/user';
-import { DTOUser } from '../types/user/dto-user';
-import { FormUpdateUserParams } from '../types/user/form-update-user';
-import { UpdateUserUseCase } from '../use-cases/update-user';
-import { internalServerError, ok } from './helpers/http';
+import { EmailAlreadyInUseError } from '../errors';
+import { DTOUser, FormUpdateUserParams } from '../types';
+import { UpdateUserUseCase } from '../use-cases';
+import { internalServerError, ok } from './helpers';
 import {
     allFieldAreEmptyResponse,
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
+    checkIfUserIdIsValid,
     emailAlreadyInUseResponse,
     invalidEmailResponse,
     invalidPasswordResponse,
@@ -21,7 +20,7 @@ export class UpdateUserController {
         try {
             const userId = request.params.userId as string;
 
-            const isValidUUID = validator.isUUID(userId);
+            const isValidUUID = checkIfUserIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 

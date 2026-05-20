@@ -1,10 +1,10 @@
 import { Request } from 'express';
-import validator from 'validator';
 import { UserNotFoundError } from '../errors/user';
-import { DTOUser } from '../types/user/dto-user';
-import { GetUserByIdUseCase } from '../use-cases/get-user-by-id';
-import { internalServerError, ok } from './helpers/http';
+import { DTOUser } from '../types';
+import { GetUserByIdUseCase } from '../use-cases';
+import { internalServerError, ok } from './helpers';
 import {
+    checkIfUserIdIsValid,
     invalidUserIdResponse,
     notFoundUserResponse,
     requiredIdResponse,
@@ -17,7 +17,7 @@ export class GetUserByIdController {
 
             if (!userId) return requiredIdResponse();
 
-            const isValidUUID = validator.isUUID(userId);
+            const isValidUUID = checkIfUserIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 

@@ -1,8 +1,8 @@
 import { Request } from 'express';
 import { UserNotFoundError } from '../errors/user';
-import { DTOUser } from '../types/user/dto-user';
-import { GetUserByMailUseCase } from '../use-cases/get-user-by-mail';
-import { internalServerError, ok } from './helpers/http';
+import { DTOUser } from '../types';
+import { GetUserByMailUseCase } from '../use-cases';
+import { internalServerError, ok } from './helpers/';
 import {
     checkIfEmailIsValid,
     invalidEmailResponse,

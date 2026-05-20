@@ -1,6 +1,6 @@
 import { UserNotFoundError } from '../errors/user';
 import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
-import { User } from '../types/user/return-user';
+import { User } from '../types';
 
 export class GetUserByMailUseCase {
     async execute(email: string): Promise<User> {

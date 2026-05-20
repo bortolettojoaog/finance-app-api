@@ -1,4 +1,4 @@
-import { User } from './return-user';
+import { User } from './';
 
 export interface DTOUser {
     status_code: number;

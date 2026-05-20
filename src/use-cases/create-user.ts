@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { EmailAlreadyInUseError } from '../errors/user';
-import { PostgresCreateUserRepository } from '../repositories/postgres/create-user';
-import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
-import { CreateUserParams } from '../types/user/create-user-params';
-import { FormCreateUserParams } from '../types/user/form-create-user';
-import { User } from '../types/user/return-user';
+import { EmailAlreadyInUseError } from '../errors';
+import {
+    PostgresCreateUserRepository,
+    PostgresGetUserByMailRepository,
+} from '../repositories/postgres';
+import { FormCreateUserParams, User } from '../types';
+import { CreateUserParams } from '../types/';
 
 export class CreateUserUseCase {
     async execute(formCreateUserParams: FormCreateUserParams): Promise<User> {

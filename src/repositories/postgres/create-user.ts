@@ -1,6 +1,5 @@
 import { PostgresHelper } from '../../db/postgres/helper';
-import { CreateUserParams } from '../../types/user/create-user-params';
-import { User } from '../../types/user/return-user';
+import { CreateUserParams, User } from '../../types';
 
 export class PostgresCreateUserRepository {
     async execute(createUserParams: CreateUserParams): Promise<User> {

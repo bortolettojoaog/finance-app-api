@@ -1,9 +1,8 @@
 import { Request } from 'express';
-import { EmailAlreadyInUseError } from '../errors/user';
-import { DTOUser } from '../types/user/dto-user';
-import { FormCreateUserParams } from '../types/user/form-create-user';
-import { CreateUserUseCase } from '../use-cases/create-user';
-import { badRequest, created, internalServerError } from './helpers/http';
+import { EmailAlreadyInUseError } from '../errors';
+import { DTOUser, FormCreateUserParams } from '../types';
+import { CreateUserUseCase } from '../use-cases';
+import { badRequest, created, internalServerError } from './helpers';
 import {
     checkIfEmailIsValid,
     checkIfPasswordIsValid,

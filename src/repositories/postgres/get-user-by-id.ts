@@ -1,6 +1,6 @@
 import { PostgresHelper } from '../../db/postgres/helper';
 import { UserNotFoundError } from '../../errors/user';
-import { User } from '../../types/user/return-user';
+import { User } from '../../types';
 
 export class PostgresGetUserByIdRepository {
     async execute(userId: string): Promise<User> {

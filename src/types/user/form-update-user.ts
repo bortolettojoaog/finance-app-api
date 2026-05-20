@@ -1,3 +1,3 @@
-import { FormCreateUserParams } from './form-create-user';
+import { FormCreateUserParams } from './';
 
 export type FormUpdateUserParams = Partial<FormCreateUserParams>;

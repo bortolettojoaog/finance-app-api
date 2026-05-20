@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt';
-import { EmailAlreadyInUseError } from '../errors/user';
+import { EmailAlreadyInUseError } from '../errors';
 import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
 import { PostgresUpdateUserRepository } from '../repositories/postgres/update-user';
-import { FormCreateUserParams } from '../types/user/form-create-user';
-import { User } from '../types/user/return-user';
+import { FormCreateUserParams, User } from '../types';
 
 export class UpdateUserUseCase {
     async execute(

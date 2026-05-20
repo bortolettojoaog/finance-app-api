@@ -1,5 +1,5 @@
-import { PostgresGetUserByIdRepository } from '../repositories/postgres/get-user-by-id';
-import { User } from '../types/user/return-user';
+import { PostgresGetUserByIdRepository } from '../repositories/postgres';
+import { User } from '../types';
 
 export class GetUserByIdUseCase {
     async execute(userId: string): Promise<User> {
