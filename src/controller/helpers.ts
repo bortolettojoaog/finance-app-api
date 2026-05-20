@@ -14,6 +14,14 @@ export const created = (body: any) => {
     };
 };
 
+export const ok = (body: any) => {
+    return {
+        status_code: 200,
+        error: null,
+        body,
+    };
+};
+
 export const internalServerError = (message?: string) => {
     return {
         status_code: 500,
