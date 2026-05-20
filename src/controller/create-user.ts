@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import validator from 'validator';
 import { DTOUser } from '../types/user/dto-user';
 import { FormCreateUserParams } from '../types/user/form-create-user';
 import { CreateUserUseCase } from '../use-cases/create-user';
@@ -25,6 +26,26 @@ export class CreateUserController {
                         body: null,
                     };
                 }
+            }
+
+            const isPasswordValid = formCreateUserParams.password.length >= 6;
+
+            if (!isPasswordValid) {
+                return {
+                    status_code: 400,
+                    error: 'Password must be at least 6 characters long',
+                    body: null,
+                };
+            }
+
+            const isEmailValid = validator.isEmail(formCreateUserParams.email);
+
+            if (!isEmailValid) {
+                return {
+                    status_code: 400,
+                    error: 'Invalid email format. Please provide a valid email address.',
+                    body: null,
+                };
             }
 
             // check required fields (obrigatory fields and password length)
