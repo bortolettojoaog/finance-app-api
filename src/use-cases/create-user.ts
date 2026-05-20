@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
+import { EmailAlreadyInUseError } from '../errors/user';
 import { PostgresCreateUserRepository } from '../repositories/postgres/create-user';
 import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
 import { CreateUserParams } from '../types/user/create-user-params';
@@ -16,9 +17,7 @@ export class CreateUserUseCase {
         );
 
         if (userAlreadyExists) {
-            throw new Error(
-                'The provided email is already in use. Please choose a different email.',
-            );
+            throw new EmailAlreadyInUseError();
         }
 
         const userId = uuidv4();
