@@ -17,7 +17,7 @@ export class CreateUserUseCase {
         );
 
         if (userAlreadyExists) {
-            throw new EmailAlreadyInUseError();
+            throw new EmailAlreadyInUseError(formCreateUserParams.email);
         }
 
         const userId = uuidv4();
