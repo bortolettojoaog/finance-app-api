@@ -4,7 +4,6 @@ import { User } from '../../types/user/return-user';
 
 export class PostgresCreateUserRepository {
     async execute(createUserParams: CreateUserParams): Promise<User> {
-        // create user in postgres database
         await PostgresHelper.query(
             'INSERT INTO users (id, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5)',
             [

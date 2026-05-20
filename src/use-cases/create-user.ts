@@ -11,7 +11,6 @@ export class CreateUserUseCase {
 
         const userId = uuidv4();
 
-        // cript password
         const hashedPassword = await bcrypt.hash(
             formCreateUserParams.password,
             10,
@@ -23,7 +22,6 @@ export class CreateUserUseCase {
             password: hashedPassword,
         };
 
-        // create user in postgres database
         const postgresCreateUserRepository = new PostgresCreateUserRepository();
 
         const createdUser =
