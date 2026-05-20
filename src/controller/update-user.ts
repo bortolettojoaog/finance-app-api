@@ -7,6 +7,8 @@ import { UpdateUserUseCase } from '../use-cases/update-user';
 import { internalServerError, ok } from './helpers/http';
 import {
     allFieldAreEmptyResponse,
+    checkIfEmailIsValid,
+    checkIfPasswordIsValid,
     emailAlreadyInUseResponse,
     invalidEmailResponse,
     invalidPasswordResponse,
@@ -43,13 +45,17 @@ export class UpdateUserController {
             if (isSomeFieldNotAllowed) return someFieldNotAllowedResponse();
 
             if (updateUserParams.password) {
-                const isPasswordValid = updateUserParams.password.length >= 6;
+                const isPasswordValid = checkIfPasswordIsValid(
+                    updateUserParams.password,
+                );
 
                 if (!isPasswordValid) return invalidPasswordResponse();
             }
 
             if (updateUserParams.email) {
-                const isEmailValid = validator.isEmail(updateUserParams.email);
+                const isEmailValid = checkIfEmailIsValid(
+                    updateUserParams.email,
+                );
 
                 if (!isEmailValid) return invalidEmailResponse();
             }

@@ -1,17 +1,20 @@
 import { Request } from 'express';
-import validator from 'validator';
 import { UserNotFoundError } from '../errors/user';
 import { DTOUser } from '../types/user/dto-user';
 import { GetUserByMailUseCase } from '../use-cases/get-user-by-mail';
 import { internalServerError, ok } from './helpers/http';
-import { invalidEmailResponse, notFoundUserResponse } from './helpers/user';
+import {
+    checkIfEmailIsValid,
+    invalidEmailResponse,
+    notFoundUserResponse,
+} from './helpers/user';
 
 export class GetUserByMailController {
     async execute(request: Request): Promise<DTOUser> {
         try {
             const email = request.query.email as string;
 
-            const isValidEmail = validator.isEmail(email);
+            const isValidEmail = checkIfEmailIsValid(email);
 
             if (!isValidEmail) return invalidEmailResponse();
 

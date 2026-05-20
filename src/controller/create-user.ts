@@ -1,11 +1,12 @@
 import { Request } from 'express';
-import validator from 'validator';
 import { EmailAlreadyInUseError } from '../errors/user';
 import { DTOUser } from '../types/user/dto-user';
 import { FormCreateUserParams } from '../types/user/form-create-user';
 import { CreateUserUseCase } from '../use-cases/create-user';
 import { badRequest, created, internalServerError } from './helpers/http';
 import {
+    checkIfEmailIsValid,
+    checkIfPasswordIsValid,
     emailAlreadyInUseResponse,
     invalidEmailResponse,
     invalidPasswordResponse,
@@ -33,11 +34,15 @@ export class CreateUserController {
                 }
             }
 
-            const isPasswordValid = formCreateUserParams.password.length >= 6;
+            const isPasswordValid = checkIfPasswordIsValid(
+                formCreateUserParams.password,
+            );
 
             if (!isPasswordValid) return invalidPasswordResponse();
 
-            const isEmailValid = validator.isEmail(formCreateUserParams.email);
+            const isEmailValid = checkIfEmailIsValid(
+                formCreateUserParams.email,
+            );
 
             if (!isEmailValid) return invalidEmailResponse();
 
