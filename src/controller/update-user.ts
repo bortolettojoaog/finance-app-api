@@ -15,6 +15,13 @@ export class UpdateUserController {
 
             if (!isValidUUID) return badRequest('Invalid user ID format');
 
+            const allFieldsAreEmpty = Object.keys(request.body).length === 0;
+
+            if (allFieldsAreEmpty)
+                return badRequest(
+                    'At least one field must be provided for update',
+                );
+
             const updateUserParams = request.body as FormUpdateUserParams;
 
             const allowedFields = [
