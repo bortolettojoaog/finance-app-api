@@ -29,7 +29,7 @@ export class UpdateUserController {
 
             if (allFieldsAreEmpty) return allFieldAreEmptyResponse();
 
-            const updateUserParams = request.body as FormUpdateUserParams;
+            const params = request.body as FormUpdateUserParams;
 
             const allowedFields = [
                 'first_name',
@@ -38,34 +38,27 @@ export class UpdateUserController {
                 'password',
             ];
 
-            const isSomeFieldNotAllowed = Object.keys(updateUserParams).some(
+            const isSomeFieldNotAllowed = Object.keys(params).some(
                 (field) => !allowedFields.includes(field),
             );
 
             if (isSomeFieldNotAllowed) return someFieldNotAllowedResponse();
 
-            if (updateUserParams.password) {
-                const isPasswordValid = checkIfPasswordIsValid(
-                    updateUserParams.password,
-                );
+            if (params.password) {
+                const isPasswordValid = checkIfPasswordIsValid(params.password);
 
                 if (!isPasswordValid) return invalidPasswordResponse();
             }
 
-            if (updateUserParams.email) {
-                const isEmailValid = checkIfEmailIsValid(
-                    updateUserParams.email,
-                );
+            if (params.email) {
+                const isEmailValid = checkIfEmailIsValid(params.email);
 
                 if (!isEmailValid) return invalidEmailResponse();
             }
 
             const updateUserUseCase = new UpdateUserUseCase();
 
-            const updatedUser = await updateUserUseCase.execute(
-                userId,
-                updateUserParams,
-            );
+            const updatedUser = await updateUserUseCase.execute(userId, params);
 
             return ok(updatedUser);
         } catch (error) {

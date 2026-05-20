@@ -12,15 +12,15 @@ import {
 export class GetUserByMailController {
     async execute(request: Request): Promise<DTOUser> {
         try {
-            const email = request.query.email as string;
+            const userMail = request.query.email as string;
 
-            const isValidEmail = checkIfEmailIsValid(email);
+            const isValidEmail = checkIfEmailIsValid(userMail);
 
             if (!isValidEmail) return invalidEmailResponse();
 
             const getUserByMailUseCase = new GetUserByMailUseCase();
 
-            const user = await getUserByMailUseCase.execute(email);
+            const user = await getUserByMailUseCase.execute(userMail);
 
             return ok(user);
         } catch (error) {

@@ -15,7 +15,7 @@ import {
 export class CreateUserController {
     async execute(httpRequest: Request): Promise<DTOUser> {
         try {
-            const formCreateUserParams: FormCreateUserParams = httpRequest.body;
+            const params: FormCreateUserParams = httpRequest.body;
 
             const requiredFields = [
                 'first_name',
@@ -24,32 +24,24 @@ export class CreateUserController {
                 'password',
             ];
             for (const field of requiredFields) {
-                if (
-                    !formCreateUserParams[field] ||
-                    formCreateUserParams[field].trim().length === 0
-                ) {
+                if (!params[field] || params[field].trim().length === 0) {
                     return badRequest(
                         `Field '${field}' is required and cannot be empty.`,
                     );
                 }
             }
 
-            const isPasswordValid = checkIfPasswordIsValid(
-                formCreateUserParams.password,
-            );
+            const isPasswordValid = checkIfPasswordIsValid(params.password);
 
             if (!isPasswordValid) return invalidPasswordResponse();
 
-            const isEmailValid = checkIfEmailIsValid(
-                formCreateUserParams.email,
-            );
+            const isEmailValid = checkIfEmailIsValid(params.email);
 
             if (!isEmailValid) return invalidEmailResponse();
 
             const createUserUseCase = new CreateUserUseCase();
 
-            const createdUser =
-                await createUserUseCase.execute(formCreateUserParams);
+            const createdUser = await createUserUseCase.execute(params);
 
             return created(createdUser);
         } catch (error) {
