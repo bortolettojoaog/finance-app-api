@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import validator from 'validator';
+import { UserNotFoundError } from '../errors/user';
 import { DTOUser } from '../types/user/dto-user';
 import { GetUserByIdUseCase } from '../use-cases/get-user-by-id';
 import { badRequest, internalServerError, ok } from './helpers';
@@ -23,6 +24,10 @@ export class GetUserByIdController {
             return ok(user);
         } catch (error) {
             console.error('Error getting user by id:', error);
+
+            if (error instanceof UserNotFoundError)
+                return badRequest(error.message);
+
             return internalServerError();
         }
     }
