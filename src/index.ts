@@ -3,6 +3,7 @@ import express, { Request, Response } from 'express';
 import { CreateUserController } from './controller/create-user';
 import { GetUserByIdController } from './controller/get-user-by-id';
 import { GetUserByMailController } from './controller/get-user-by-mail';
+import { UpdateUserController } from './controller/update-user';
 
 const app = express();
 
@@ -34,6 +35,18 @@ app.get('/api/users', async (request: Request, response: Response) => {
 
     return response.status(status_code).json(error ? { error } : body);
 });
+
+app.patch(
+    '/api/users/:userId',
+    async (request: Request, response: Response) => {
+        const updateUserController = new UpdateUserController();
+
+        const { status_code, body, error } =
+            await updateUserController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
