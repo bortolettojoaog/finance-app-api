@@ -1,13 +1,25 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { PostgresCreateUserRepository } from '../repositories/postgres/create-user';
+import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
 import { CreateUserParams } from '../types/user/create-user-params';
 import { FormCreateUserParams } from '../types/user/form-create-user';
 import { User } from '../types/user/return-user';
 
 export class CreateUserUseCase {
     async execute(formCreateUserParams: FormCreateUserParams): Promise<User> {
-        // TODO: check if user already exists in postgres database
+        const postgresGetUserByMailRepository =
+            new PostgresGetUserByMailRepository();
+
+        const userAlreadyExists = await postgresGetUserByMailRepository.execute(
+            formCreateUserParams.email,
+        );
+
+        if (userAlreadyExists) {
+            throw new Error(
+                'The provided email is already in use. Please choose a different email.',
+            );
+        }
 
         const userId = uuidv4();
 
