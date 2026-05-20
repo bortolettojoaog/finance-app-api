@@ -11,4 +11,4 @@ services:
         environment:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: password
-            POSTGRES_DATABASE: finance-app
+            POSTGRES_DB: finance-app
