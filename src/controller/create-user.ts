@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import validator from 'validator';
+import { EmailAlreadyInUseError } from '../errors/user';
 import { DTOUser } from '../types/user/dto-user';
 import { FormCreateUserParams } from '../types/user/form-create-user';
 import { CreateUserUseCase } from '../use-cases/create-user';
@@ -51,6 +52,11 @@ export class CreateUserController {
             return created(createdUser);
         } catch (error) {
             console.error('Error creating user:', error);
+
+            if (error instanceof EmailAlreadyInUseError) {
+                return badRequest(error.message);
+            }
+
             return internalServerError();
         }
     }
