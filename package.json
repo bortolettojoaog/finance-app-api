@@ -3,16 +3,18 @@
     "version": "1.0.0",
     "description": "finance-app api",
     "main": "index.js",
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "tsc",
-        "postinstall": "npx husky install"
+        "build": "tsc && tsc-alias",
+        "postinstall": "npx husky install",
+        "migrations:run": "yarn build && node build/db/postgres/migrations/exec.js"
     },
     "author": "bortolettojoaog",
     "license": "ISC",
     "devDependencies": {
         "@eslint/js": "^9.15.0",
+        "@types/node": "^22.10.0",
         "@types/pg": "^8.11.10",
         "eslint": "^9.15.0",
         "eslint-config-prettier": "^9.1.0",
@@ -22,7 +24,9 @@
         "husky": "^9.1.7",
         "lint-staged": "^15.2.10",
         "prettier": "^3.3.3",
-        "typescript": "^5.6.3",
+        "ts-node": "^10.9.2",
+        "tsc-alias": "^1.8.10",
+        "typescript": "^5.7.2",
         "typescript-eslint": "^8.15.0"
     },
     "dependencies": {
