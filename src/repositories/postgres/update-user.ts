@@ -1,4 +1,5 @@
 import { PostgresHelper } from '../../db/postgres/helper';
+import { UserNotFoundError } from '../../errors/user';
 import { FormCreateUserParams } from '../../types/user/form-create-user';
 import { User } from '../../types/user/return-user';
 
@@ -27,6 +28,8 @@ export class PostgresUpdateUserRepository {
         `;
 
         const updatedUser = await PostgresHelper.query(query, updateValues);
+
+        if (updatedUser.length === 0) throw new UserNotFoundError();
 
         return updatedUser[0];
     }
