@@ -22,6 +22,14 @@ export const ok = (body: any) => {
     };
 };
 
+export const notFound = (message: string) => {
+    return {
+        status_code: 404,
+        error: message,
+        body: null,
+    };
+};
+
 export const internalServerError = (message?: string) => {
     return {
         status_code: 500,
