@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
   last_name VARCHAR(50) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -26,6 +27,7 @@ COMMENT ON COLUMN users.id IS 'Unique identifier for the user';
 COMMENT ON COLUMN users.first_name IS 'First name of the user';
 COMMENT ON COLUMN users.last_name IS 'Last name of the user';
 COMMENT ON COLUMN users.email IS 'Email of the user';
+COMMENT ON COLUMN users.active IS 'Indicates if the user is active';
 COMMENT ON COLUMN users.created_at IS 'Timestamp when the user was created';
 COMMENT ON COLUMN users.updated_at IS 'Timestamp when the user was last updated';
 
@@ -64,7 +66,7 @@ COMMENT ON COLUMN transactions.type IS 'Type of the transaction';
 COMMENT ON COLUMN transactions.created_at IS 'Timestamp when the transaction was created';
 COMMENT ON COLUMN transactions.updated_at IS 'Timestamp when the transaction was last updated';
 
-CREATE TRIGGER update_users_updated_at
+CREATE TRIGGER update_transactions_updated_at
 BEFORE UPDATE ON transactions
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
