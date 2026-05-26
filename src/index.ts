@@ -6,6 +6,7 @@ import {
     GetUserByMailController,
     UpdateUserController,
 } from './controller';
+import { DeleteUserController } from './controller/delete-user';
 
 const app = express();
 
@@ -46,6 +47,16 @@ app.patch(
         const { status_code, body, error } =
             await updateUserController.execute(request);
 
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.delete(
+    '/api/users/:userId',
+    async (request: Request, response: Response) => {
+        const deleteUserController = new DeleteUserController();
+        const { status_code, body, error } =
+            await deleteUserController.execute(request);
         return response.status(status_code).json(error ? { error } : body);
     },
 );
