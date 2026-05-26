@@ -17,6 +17,13 @@ export class DeleteUserUseCase {
             throw new UserNotFoundError();
         }
 
+        const isAlreadyDeleted =
+            await postgresDeleteUserRepository.execute(userId);
+
+        if (isAlreadyDeleted) {
+            throw new UserNotFoundError();
+        }
+
         const deletedUser = await postgresDeleteUserRepository.execute(userId);
 
         return deletedUser;
