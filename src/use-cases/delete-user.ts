@@ -11,10 +11,9 @@ export class DeleteUserUseCase {
         const postgresGetUserByIdRepository =
             new PostgresGetUserByIdRepository();
 
-        const userAlreadyExists =
-            await postgresGetUserByIdRepository.execute(userId);
+        const userExists = await postgresGetUserByIdRepository.execute(userId);
 
-        if (!userAlreadyExists) {
+        if (!userExists) {
             throw new UserNotFoundError();
         }
 
