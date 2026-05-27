@@ -11,6 +11,7 @@ import {
 import {
     makeCheckDeletedTransactionController,
     makeCreateTransactionController,
+    makeDeleteTransactionController,
     makeGetTransactionByIdController,
     makeUpdateTransactionController,
 } from './factories/controller/transaction';
@@ -130,6 +131,19 @@ app.get(
 
         const { status_code, body, error } =
             await factoryCheckDeletedTransactionController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.delete(
+    '/api/transactions/:transactionId',
+    async (request: Request, response: Response) => {
+        const factoryDeleteTransactionController =
+            makeDeleteTransactionController();
+
+        const { status_code, body, error } =
+            await factoryDeleteTransactionController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
