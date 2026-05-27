@@ -1,20 +1,18 @@
 import 'dotenv/config.js';
 import express, { Request, Response } from 'express';
 import {
+    makeCheckDeletedTransactionController,
     makeCheckDeletedUserController,
+    makeCreateTransactionController,
     makeCreateUserController,
+    makeDeleteTransactionController,
     makeDeleteUserController,
+    makeGetTransactionByIdController,
     makeGetUserByIdController,
     makeGetUserByMailController,
+    makeUpdateTransactionController,
     makeUpdateUserController,
 } from './factories';
-import {
-    makeCheckDeletedTransactionController,
-    makeCreateTransactionController,
-    makeDeleteTransactionController,
-    makeGetTransactionByIdController,
-    makeUpdateTransactionController,
-} from './factories/controller/transaction';
 
 const app = express();
 

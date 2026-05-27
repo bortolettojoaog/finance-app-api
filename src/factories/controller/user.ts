@@ -5,7 +5,7 @@ import {
     GetUserByIdController,
     GetUserByMailController,
     UpdateUserController,
-} from '../../controller/user';
+} from '../../controller';
 import {
     PostgresCheckDeletedUserRepository,
     PostgresCreateUserRepository,
@@ -13,7 +13,7 @@ import {
     PostgresGetUserByIdRepository,
     PostgresGetUserByMailRepository,
     PostgresUpdateUserRepository,
-} from '../../repositories/postgres/user';
+} from '../../repositories/postgres';
 import {
     CreateUserUseCase,
     DeleteUserUseCase,

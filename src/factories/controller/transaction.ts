@@ -1,10 +1,10 @@
 import {
+    CheckDeletedTransactionController,
+    CreateTransactionController,
     DeleteTransactionController,
     GetTransactionByIdController,
     UpdateTransactionController,
-} from '../../controller/transaction';
-import { CheckDeletedTransactionController } from '../../controller/transaction/check-deleted-transaction';
-import { CreateTransactionController } from '../../controller/transaction/create-transaction';
+} from '../../controller';
 import {
     PostgresCheckDeletedTransactionRepository,
     PostgresCheckDeletedUserRepository,
@@ -16,10 +16,10 @@ import {
 } from '../../repositories/postgres';
 import {
     CreateTransactionUseCase,
+    DeleteTransactionUseCase,
     GetTransactionByIdUseCase,
     UpdateTransactionUseCase,
 } from '../../use-cases';
-import { DeleteTransactionUseCase } from '../../use-cases/transaction/delete-transaction';
 
 export const makeCreateTransactionController = () => {
     const postgresCreateTransactionRepository =

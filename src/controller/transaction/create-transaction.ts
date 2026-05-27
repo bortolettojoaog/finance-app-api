@@ -8,20 +8,18 @@ import {
 import {
     badRequest,
     checkIfUserIdIsValid,
+    checkTransactionAmount,
+    checkTransactionAmountIsCurrency,
+    checkTransactionType,
     internalServerError,
+    invalidTransactionAmountResponse,
+    invalidTransactionTypeResponse,
     invalidUserIdResponse,
+    negativeOrNaNTransactionAmountResponse,
     notFoundUserResponse,
     ok,
     requiredIdResponse,
 } from '../helpers';
-import {
-    checkTransactionAmount,
-    checkTransactionAmountIsCurrency,
-    checkTransactionType,
-    invalidTransactionAmountResponse,
-    invalidTransactionTypeResponse,
-    negativeOrNaNTransactionAmountResponse,
-} from '../helpers/transaction';
 
 interface ICreateTransactionUseCase {
     execute(
