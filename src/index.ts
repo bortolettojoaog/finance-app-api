@@ -7,15 +7,24 @@ import {
     UpdateUserController,
 } from './controller';
 import { DeleteUserController } from './controller/delete-user';
-import { PostgresGetUserByIdRepository } from './repositories/postgres';
-import { GetUserByIdUseCase } from './use-cases';
+import {
+    PostgresCreateUserRepository,
+    PostgresGetUserByIdRepository,
+} from './repositories/postgres';
+import { CreateUserUseCase, GetUserByIdUseCase } from './use-cases';
 
 const app = express();
 
 app.use(express.json());
 
 app.post('/api/users', async (request: Request, response: Response) => {
-    const createUserController = new CreateUserController();
+    const postgresCreateUserRepository = new PostgresCreateUserRepository();
+
+    const createUserUseCase = new CreateUserUseCase(
+        postgresCreateUserRepository,
+    );
+
+    const createUserController = new CreateUserController(createUserUseCase);
 
     const { status_code, body, error } =
         await createUserController.execute(request);
