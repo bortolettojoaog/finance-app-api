@@ -1,5 +1,6 @@
 import { UserNotFoundError } from '../errors';
 import {
+    PostgresCheckDeletedUserRepository,
     PostgresDeleteUserRepository,
     PostgresGetUserByIdRepository,
 } from '../repositories/postgres';
@@ -26,8 +27,11 @@ export class DeleteUserUseCase {
             throw new UserNotFoundError();
         }
 
+        const checkDeletedUserRepository =
+            new PostgresCheckDeletedUserRepository();
+
         const isAlreadyDeleted =
-            await this.postgresDeleteUserRepository.execute(userId);
+            await checkDeletedUserRepository.execute(userId);
 
         if (isAlreadyDeleted) {
             throw new UserNotFoundError();
