@@ -9,6 +9,7 @@ import {
     makeUpdateUserController,
 } from './factories';
 import {
+    makeCheckDeletedTransactionController,
     makeCreateTransactionController,
     makeGetTransactionByIdController,
     makeUpdateTransactionController,
@@ -116,6 +117,19 @@ app.patch(
 
         const { status_code, body, error } =
             await factoryUpdateTransactionController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.get(
+    '/api/transactions/:transactionId/active',
+    async (request: Request, response: Response) => {
+        const factoryCheckDeletedTransactionController =
+            makeCheckDeletedTransactionController();
+
+        const { status_code, body, error } =
+            await factoryCheckDeletedTransactionController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
