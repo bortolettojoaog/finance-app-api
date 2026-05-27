@@ -6,6 +6,7 @@ import {
     GetUserByMailController,
     UpdateUserController,
 } from './controller';
+import { CheckDeletedUserController } from './controller/check-deleted-user';
 import { DeleteUserController } from './controller/delete-user';
 import {
     PostgresCheckDeletedUserRepository,
@@ -78,6 +79,23 @@ app.get('/api/users', async (request: Request, response: Response) => {
 
     return response.status(status_code).json(error ? { error } : body);
 });
+
+app.get(
+    '/api/users/:userId/active',
+    async (request: Request, response: Response) => {
+        const postgresCheckDeletedUserRepository =
+            new PostgresCheckDeletedUserRepository();
+
+        const checkDeletedUserController = new CheckDeletedUserController(
+            postgresCheckDeletedUserRepository,
+        );
+
+        const { status_code, body, error } =
+            await checkDeletedUserController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
 
 app.patch(
     '/api/users/:userId',
