@@ -20,6 +20,14 @@ export const negativeOrNaNTransactionAmountResponse = () => {
     );
 };
 
+export const invalidTransactionIdResponse = () => {
+    return badRequest('Invalid transaction ID format');
+};
+
+export const notFoundTransationResponse = () => {
+    return badRequest('Transaction not found.');
+};
+
 export const checkTransactionType = (type: string) => {
     return Object.values(TransactionType).includes(type as TransactionType);
 };
@@ -34,4 +42,8 @@ export const checkTransactionAmountIsCurrency = (amount: number) => {
         allow_negatives: false,
         decimal_separator: '.',
     });
+};
+
+export const checkIfTransactionIdIsValid = (userId: string): boolean => {
+    return validator.isUUID(userId);
 };
