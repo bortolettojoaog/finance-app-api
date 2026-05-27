@@ -32,6 +32,8 @@ export class DeleteUserController {
 
             return ok(deletedUser);
         } catch (error) {
+            console.log('Error deleting user:', error);
+
             if (error instanceof UserNotFoundError) {
                 return notFound(error.message);
             }
