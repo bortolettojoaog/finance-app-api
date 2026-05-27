@@ -16,7 +16,7 @@ import {
     invalidTransactionIdResponse,
     invalidTransactionTypeResponse,
     negativeOrNaNTransactionAmountResponse,
-    notFoundTransationResponse,
+    notFoundTransactionResponse,
     ok,
     someFieldNotAllowedResponse,
 } from '../helpers';
@@ -92,7 +92,7 @@ export class UpdateTransactionController {
             console.error('Error updating Transaction:', error);
 
             if (error instanceof TransactionNotFoundError)
-                return notFoundTransationResponse();
+                return notFoundTransactionResponse();
 
             return internalServerError();
         }

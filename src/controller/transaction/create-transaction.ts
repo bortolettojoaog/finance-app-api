@@ -18,7 +18,7 @@ import {
     checkTransactionAmount,
     checkTransactionAmountIsCurrency,
     checkTransactionType,
-    invalidTransactionAmount,
+    invalidTransactionAmountResponse,
     invalidTransactionTypeResponse,
     negativeOrNaNTransactionAmountResponse,
 } from '../helpers/transaction';
@@ -72,7 +72,7 @@ export class CreateTransactionController {
                 params.amount,
             );
 
-            if (!isValidAmount) return invalidTransactionAmount();
+            if (!isValidAmount) return invalidTransactionAmountResponse();
 
             const isValidType = checkTransactionType(params.type);
 

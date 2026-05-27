@@ -1,6 +1,8 @@
-import { UpdateTransactionController } from '../../controller/transaction';
+import {
+    GetTransactionByIdController,
+    UpdateTransactionController,
+} from '../../controller/transaction';
 import { CreateTransactionController } from '../../controller/transaction/create-transaction';
-import { GetTransationByIdController } from '../../controller/transaction/get-transaction-by-id';
 import {
     PostgresCheckDeletedUserRepository,
     PostgresCreateTransactionRepository,
@@ -10,7 +12,7 @@ import {
 } from '../../repositories/postgres';
 import {
     CreateTransactionUseCase,
-    GetTransationByIdUseCase,
+    GetTransactionByIdUseCase,
     UpdateTransactionUseCase,
 } from '../../use-cases';
 
@@ -40,11 +42,11 @@ export const makeGetTransactionByIdController = () => {
     const postgresGetTransactionByIdRepository =
         new PostgresGetTransactionByIdRepository();
 
-    const getTransactionByIdUseCase = new GetTransationByIdUseCase(
+    const getTransactionByIdUseCase = new GetTransactionByIdUseCase(
         postgresGetTransactionByIdRepository,
     );
 
-    const getTransactionByIdController = new GetTransationByIdController(
+    const getTransactionByIdController = new GetTransactionByIdController(
         getTransactionByIdUseCase,
     );
 

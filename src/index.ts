@@ -109,7 +109,7 @@ app.get(
 );
 
 app.patch(
-    '/api/transactions/:trasactionId',
+    '/api/transactions/:transactionId',
     async (request: Request, response: Response) => {
         const factoryUpdateTransactionController =
             makeUpdateTransactionController();

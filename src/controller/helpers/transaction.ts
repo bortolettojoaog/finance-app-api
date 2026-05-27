@@ -24,7 +24,7 @@ export const invalidTransactionIdResponse = () => {
     return badRequest('Invalid transaction ID format');
 };
 
-export const notFoundTransationResponse = () => {
+export const notFoundTransactionResponse = () => {
     return badRequest('Transaction not found.');
 };
 

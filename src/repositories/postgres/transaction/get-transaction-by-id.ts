@@ -5,7 +5,7 @@ import { Transaction } from '../../../types';
 export class PostgresGetTransactionByIdRepository {
     async execute(transactionId: string): Promise<Transaction> {
         const transaction = await PostgresHelper.query(
-            'SELECT id, user_id, name, date, amount, type FROM transaction WHERE id = $1',
+            'SELECT id, user_id, name, date, amount, type FROM transactions WHERE id = $1',
             [transactionId],
         );
 

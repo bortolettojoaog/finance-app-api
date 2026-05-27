@@ -1,22 +1,23 @@
 import { Transaction } from '../../types';
 
-interface IGetTransationByIdRepository {
-    execute(TransationId: string): Promise<Transaction>;
+interface IGetTransactionByIdRepository {
+    execute(transactionId: string): Promise<Transaction>;
 }
 
-export class GetTransationByIdUseCase {
-    private readonly postgresGetTransationByIdRepository: IGetTransationByIdRepository;
+export class GetTransactionByIdUseCase {
+    private readonly postgresGetTransactionByIdRepository: IGetTransactionByIdRepository;
 
-    constructor(getTransationByIdRepository: IGetTransationByIdRepository) {
-        this.postgresGetTransationByIdRepository = getTransationByIdRepository;
+    constructor(getTransactionByIdRepository: IGetTransactionByIdRepository) {
+        this.postgresGetTransactionByIdRepository =
+            getTransactionByIdRepository;
     }
 
-    async execute(transationId: string): Promise<Transaction> {
-        const transation =
-            await this.postgresGetTransationByIdRepository.execute(
-                transationId,
+    async execute(transactionId: string): Promise<Transaction> {
+        const transaction =
+            await this.postgresGetTransactionByIdRepository.execute(
+                transactionId,
             );
 
-        return transation;
+        return transaction;
     }
 }

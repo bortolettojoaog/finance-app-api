@@ -5,41 +5,41 @@ import {
     checkIfTransactionIdIsValid,
     internalServerError,
     invalidTransactionIdResponse,
-    notFoundTransationResponse,
+    notFoundTransactionResponse,
     ok,
     requiredIdResponse,
 } from '../helpers';
 
-interface IGetTransationByIdUseCase {
-    execute(TransationId: string): Promise<Transaction>;
+interface IGetTransactionByIdUseCase {
+    execute(TransactionId: string): Promise<Transaction>;
 }
 
-export class GetTransationByIdController {
-    private readonly getTransationByIdUseCase: IGetTransationByIdUseCase;
+export class GetTransactionByIdController {
+    private readonly getTransactionByIdUseCase: IGetTransactionByIdUseCase;
 
-    constructor(getTransationByIdUseCase: IGetTransationByIdUseCase) {
-        this.getTransationByIdUseCase = getTransationByIdUseCase;
+    constructor(getTransactionByIdUseCase: IGetTransactionByIdUseCase) {
+        this.getTransactionByIdUseCase = getTransactionByIdUseCase;
     }
 
     async execute(httpRequest: Request): Promise<DTOTransaction> {
         try {
-            const transationId = httpRequest.params.transationId as string;
+            const transactionId = httpRequest.params.transactionId as string;
 
-            if (!transationId) return requiredIdResponse();
+            if (!transactionId) return requiredIdResponse();
 
-            const isValidUUID = checkIfTransactionIdIsValid(transationId);
+            const isValidUUID = checkIfTransactionIdIsValid(transactionId);
 
             if (!isValidUUID) return invalidTransactionIdResponse();
 
-            const transation =
-                await this.getTransationByIdUseCase.execute(transationId);
+            const transaction =
+                await this.getTransactionByIdUseCase.execute(transactionId);
 
-            return ok(transation);
+            return ok(transaction);
         } catch (error) {
-            console.error('Error getting Transation by id:', error);
+            console.error('Error getting transaction by id:', error);
 
             if (error instanceof TransactionNotFoundError)
-                return notFoundTransationResponse();
+                return notFoundTransactionResponse();
 
             return internalServerError();
         }
