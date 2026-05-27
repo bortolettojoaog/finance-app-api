@@ -89,7 +89,7 @@ export class UpdateTransactionController {
 
             return ok(updatedTransaction);
         } catch (error) {
-            console.error('Error updating Transaction:', error);
+            console.error('Error updating transaction:', error);
 
             if (error instanceof TransactionNotFoundError)
                 return notFoundTransactionResponse();

@@ -36,7 +36,7 @@ export class CheckDeletedTransactionController {
 
             return ok(isDeleted);
         } catch (error) {
-            console.error('Error creating Transaction:', error);
+            console.error('Error creating transaction:', error);
 
             return internalServerError();
         }
