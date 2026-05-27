@@ -37,7 +37,7 @@ export class GetUserTransactionsController {
 
             return ok(transactions);
         } catch (error) {
-            console.error('Error getting transaction by id:', error);
+            console.error('Error getting transactions by user:', error);
 
             if (error instanceof TransactionNotFoundError)
                 return notFoundTransactionResponse();
