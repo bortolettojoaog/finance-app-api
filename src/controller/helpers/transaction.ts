@@ -8,7 +8,7 @@ export const invalidTransactionTypeResponse = () => {
     );
 };
 
-export const invalidTransactionAmount = () => {
+export const invalidTransactionAmountResponse = () => {
     return badRequest(
         'Invalid transaction amount. Amount must be a currency value',
     );
