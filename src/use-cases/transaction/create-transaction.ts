@@ -5,6 +5,7 @@ import {
     DeletedUser,
     FormCreateTransactionParams,
     Transaction,
+    User,
 } from '../../types';
 
 interface ICreateTransactionRepository {
@@ -13,28 +14,42 @@ interface ICreateTransactionRepository {
     ): Promise<Transaction>;
 }
 
+interface IGetUserByIdRepository {
+    execute(userId: string): Promise<User>;
+}
+
 interface ICheckDeletedUserRepository {
     execute(userId: string): Promise<DeletedUser>;
 }
 
 export class CreateTransactionUseCase {
-    private readonly createTransactionRepository: ICreateTransactionRepository;
-    private readonly checkDeletedUserRepository: ICheckDeletedUserRepository;
+    private readonly postgresCreateTransactionRepository: ICreateTransactionRepository;
+    private readonly postgresGetUserByIdRepository: IGetUserByIdRepository;
+    private readonly postgresCheckDeletedUserRepository: ICheckDeletedUserRepository;
 
     constructor(
-        createTransactionRepository: ICreateTransactionRepository,
-        checkDeletedUserRepository: ICheckDeletedUserRepository,
+        postgresCreateTransactionRepository: ICreateTransactionRepository,
+        postgresGetUserByIdRepository: IGetUserByIdRepository,
+        postgresCheckDeletedUserRepository: ICheckDeletedUserRepository,
     ) {
-        this.createTransactionRepository = createTransactionRepository;
-        this.checkDeletedUserRepository = checkDeletedUserRepository;
+        this.postgresCreateTransactionRepository =
+            postgresCreateTransactionRepository;
+        this.postgresGetUserByIdRepository = postgresGetUserByIdRepository;
+        this.postgresCheckDeletedUserRepository =
+            postgresCheckDeletedUserRepository;
     }
 
     async execute(
         user_id: string,
         createTransactionParams: FormCreateTransactionParams,
     ): Promise<Transaction> {
+        const userExists =
+            await this.postgresGetUserByIdRepository.execute(user_id);
+
+        if (!userExists) throw new UserNotFoundError();
+
         const isDeletedUser =
-            await this.checkDeletedUserRepository.execute(user_id);
+            await this.postgresCheckDeletedUserRepository.execute(user_id);
 
         if (!isDeletedUser.active) throw new UserNotFoundError();
 
@@ -47,7 +62,7 @@ export class CreateTransactionUseCase {
         };
 
         const transaction =
-            await this.createTransactionRepository.execute(validParams);
+            await this.postgresCreateTransactionRepository.execute(validParams);
 
         return transaction;
     }

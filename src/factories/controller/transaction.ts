@@ -2,18 +2,23 @@ import { CreateTransactionController } from '../../controller/transaction/create
 import {
     PostgresCheckDeletedUserRepository,
     PostgresCreateTransactionRepository,
+    PostgresGetUserByIdRepository,
 } from '../../repositories/postgres';
 import { CreateTransactionUseCase } from '../../use-cases';
 
 export const makeCreateTransactionController = () => {
-    const createTransactionRepository =
+    const postgresCreateTransactionRepository =
         new PostgresCreateTransactionRepository();
 
-    const checkDeletedUserRepository = new PostgresCheckDeletedUserRepository();
+    const postgresCheckDeletedUserRepository =
+        new PostgresCheckDeletedUserRepository();
+
+    const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository();
 
     const createTransactionUseCase = new CreateTransactionUseCase(
-        createTransactionRepository,
-        checkDeletedUserRepository,
+        postgresCreateTransactionRepository,
+        postgresGetUserByIdRepository,
+        postgresCheckDeletedUserRepository,
     );
 
     const createTransactionController = new CreateTransactionController(
