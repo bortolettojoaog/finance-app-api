@@ -1,12 +1,20 @@
-import { PostgresCheckDeletedUserRepository } from '../repositories/postgres';
+import { DeletedUser } from '../types';
+
+interface ICheckDeletedUserUseCase {
+    execute(userId: string): Promise<DeletedUser>;
+}
 
 export class CheckDeletedUserUseCase {
-    async execute(userId: string): Promise<boolean> {
-        const postgresCheckDeletedUserRepository =
-            new PostgresCheckDeletedUserRepository();
+    readonly postgresCheckDeletedUserRepository: ICheckDeletedUserUseCase;
 
+    constructor(postgresCheckDeletedUserRepository: ICheckDeletedUserUseCase) {
+        this.postgresCheckDeletedUserRepository =
+            postgresCheckDeletedUserRepository;
+    }
+
+    async execute(userId: string): Promise<DeletedUser> {
         const isDeleted =
-            await postgresCheckDeletedUserRepository.execute(userId);
+            await this.postgresCheckDeletedUserRepository.execute(userId);
 
         return isDeleted;
     }
