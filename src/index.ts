@@ -29,8 +29,12 @@ app.use(express.json());
 app.post('/api/users', async (request: Request, response: Response) => {
     const postgresCreateUserRepository = new PostgresCreateUserRepository();
 
+    const postgresGetUserByMailRepository =
+        new PostgresGetUserByMailRepository();
+
     const createUserUseCase = new CreateUserUseCase(
         postgresCreateUserRepository,
+        postgresGetUserByMailRepository,
     );
 
     const createUserController = new CreateUserController(createUserUseCase);
