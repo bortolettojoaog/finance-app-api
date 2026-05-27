@@ -31,7 +31,7 @@ export const checkTransactionAmount = (amount: number) => {
 export const checkTransactionAmountIsCurrency = (amount: number) => {
     return validator.isCurrency(amount.toString(), {
         digits_after_decimal: [2],
-        allow_decimal: false,
+        allow_negatives: false,
         decimal_separator: '.',
     });
 };
