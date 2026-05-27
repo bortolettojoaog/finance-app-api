@@ -79,8 +79,12 @@ export const makeCheckDeletedUserController = () => {
 export const makeUpdateUserController = () => {
     const postgresUpdateUserRepository = new PostgresUpdateUserRepository();
 
+    const postgresGetUserByMailRepository =
+        new PostgresGetUserByMailRepository();
+
     const updateUserUseCase = new UpdateUserUseCase(
         postgresUpdateUserRepository,
+        postgresGetUserByMailRepository,
     );
 
     const updateUserController = new UpdateUserController(updateUserUseCase);

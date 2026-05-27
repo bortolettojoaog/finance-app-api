@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { EmailAlreadyInUseError } from '../../errors';
-import { PostgresGetUserByMailRepository } from '../../repositories/postgres';
 import { FormCreateUserParams, User } from '../../types';
 
 interface IUpdateUserRepository {
@@ -10,11 +9,20 @@ interface IUpdateUserRepository {
     ): Promise<User>;
 }
 
+interface IGetUserByMailRepository {
+    execute(email: string): Promise<User | null>;
+}
+
 export class UpdateUserUseCase {
     private readonly postgresUpdateUserRepository: IUpdateUserRepository;
+    private readonly postgresGetUserByMailRepository: IGetUserByMailRepository;
 
-    constructor(postgresUpdateUserRepository: IUpdateUserRepository) {
+    constructor(
+        postgresUpdateUserRepository: IUpdateUserRepository,
+        postgresGetUserByMailRepository: IGetUserByMailRepository,
+    ) {
         this.postgresUpdateUserRepository = postgresUpdateUserRepository;
+        this.postgresGetUserByMailRepository = postgresGetUserByMailRepository;
     }
 
     async execute(
@@ -22,11 +30,8 @@ export class UpdateUserUseCase {
         updateUserParams: Partial<FormCreateUserParams>,
     ): Promise<User> {
         if (updateUserParams.email) {
-            const postgresGetUserByMailRepository =
-                new PostgresGetUserByMailRepository();
-
             const userAlreadyExists =
-                await postgresGetUserByMailRepository.execute(
+                await this.postgresGetUserByMailRepository.execute(
                     updateUserParams.email,
                 );
 
