@@ -16,16 +16,17 @@ interface ICheckDeletedUserRepository {
 export class DeleteUserUseCase {
     private readonly postgresDeleteUserRepository: IDeleteUserRepository;
     private readonly postgresGetUserByIdRepository: IGetUserByIdRepository;
-    private readonly checkDeletedUserRepository: ICheckDeletedUserRepository;
+    private readonly postgresCheckDeletedUserRepository: ICheckDeletedUserRepository;
 
     constructor(
         postgresDeleteUserRepository: IDeleteUserRepository,
         postgresGetUserByIdRepository: IGetUserByIdRepository,
-        checkDeletedUserRepository: ICheckDeletedUserRepository,
+        postgresCheckDeletedUserRepository: ICheckDeletedUserRepository,
     ) {
         this.postgresDeleteUserRepository = postgresDeleteUserRepository;
         this.postgresGetUserByIdRepository = postgresGetUserByIdRepository;
-        this.checkDeletedUserRepository = checkDeletedUserRepository;
+        this.postgresCheckDeletedUserRepository =
+            postgresCheckDeletedUserRepository;
     }
 
     async execute(userId: string): Promise<User> {
@@ -37,7 +38,7 @@ export class DeleteUserUseCase {
         }
 
         const isAlreadyDeleted =
-            await this.checkDeletedUserRepository.execute(userId);
+            await this.postgresCheckDeletedUserRepository.execute(userId);
 
         if (!isAlreadyDeleted.active) {
             throw new UserNotFoundError();

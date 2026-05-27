@@ -5,14 +5,14 @@ interface IGetUserByIdRepository {
 }
 
 export class GetUserByIdUseCase {
-    private readonly getUserByIdRepository: IGetUserByIdRepository;
+    private readonly postgresGetUserByIdRepository: IGetUserByIdRepository;
 
     constructor(getUserByIdRepository: IGetUserByIdRepository) {
-        this.getUserByIdRepository = getUserByIdRepository;
+        this.postgresGetUserByIdRepository = getUserByIdRepository;
     }
 
     async execute(userId: string): Promise<User> {
-        const user = await this.getUserByIdRepository.execute(userId);
+        const user = await this.postgresGetUserByIdRepository.execute(userId);
 
         return user;
     }

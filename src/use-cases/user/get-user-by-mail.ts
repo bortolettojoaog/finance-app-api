@@ -6,14 +6,14 @@ interface IGetUserByMailRepository {
 }
 
 export class GetUserByMailUseCase {
-    private readonly getUserByMailRepository: IGetUserByMailRepository;
+    private readonly postgresGetUserByMailRepository: IGetUserByMailRepository;
 
     constructor(getUserByMailRepository: IGetUserByMailRepository) {
-        this.getUserByMailRepository = getUserByMailRepository;
+        this.postgresGetUserByMailRepository = getUserByMailRepository;
     }
 
     async execute(email: string): Promise<User | null> {
-        const user = await this.getUserByMailRepository.execute(email);
+        const user = await this.postgresGetUserByMailRepository.execute(email);
 
         if (!user) throw new UserNotFoundError();
 
