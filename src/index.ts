@@ -10,6 +10,7 @@ import {
     makeGetTransactionByIdController,
     makeGetUserByIdController,
     makeGetUserByMailController,
+    makeGetUserTransactionsController,
     makeUpdateTransactionController,
     makeUpdateUserController,
 } from './factories';
@@ -103,6 +104,19 @@ app.get(
 
         const { status_code, body, error } =
             await factoryGetTransactionByIdController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.get(
+    '/api/transactions/user/:userId',
+    async (request: Request, response: Response) => {
+        const factoryGetUserTransactionsController =
+            makeGetUserTransactionsController();
+
+        const { status_code, body, error } =
+            await factoryGetUserTransactionsController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
