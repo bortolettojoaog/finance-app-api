@@ -16,9 +16,11 @@ import {
 } from '../helpers';
 import {
     checkTransactionAmount,
+    checkTransactionAmountIsCurrency,
     checkTransactionType,
-    invalidTransactionAmountResponse,
+    invalidTransactionAmount,
     invalidTransactionTypeResponse,
+    negativeOrNaNTransactionAmountResponse,
 } from '../helpers/transaction';
 
 interface ICreateTransactionUseCase {
@@ -61,9 +63,16 @@ export class CreateTransactionController {
                 }
             }
 
-            const isValidAmount = checkTransactionAmount(params.amount);
+            const isPositiveAmount = checkTransactionAmount(params.amount);
 
-            if (!isValidAmount) return invalidTransactionAmountResponse();
+            if (!isPositiveAmount)
+                return negativeOrNaNTransactionAmountResponse();
+
+            const isValidAmount = checkTransactionAmountIsCurrency(
+                params.amount,
+            );
+
+            if (!isValidAmount) return invalidTransactionAmount();
 
             const isValidType = checkTransactionType(params.type);
 
