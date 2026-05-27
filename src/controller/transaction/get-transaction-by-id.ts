@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { TransactionNotFoundError } from '../../errors';
 import { DTOTransaction, Transaction } from '../../types';
 import {
-    checkIfTransactionIdIsValid,
+    checkIfIdIsValid,
     internalServerError,
     invalidTransactionIdResponse,
     notFoundTransactionResponse,
@@ -27,7 +27,7 @@ export class GetTransactionByIdController {
 
             if (!transactionId) return requiredIdResponse();
 
-            const isValidUUID = checkIfTransactionIdIsValid(transactionId);
+            const isValidUUID = checkIfIdIsValid(transactionId);
 
             if (!isValidUUID) return invalidTransactionIdResponse();
 

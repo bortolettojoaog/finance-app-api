@@ -1,12 +1,11 @@
 import { Request } from 'express';
 import { EmailAlreadyInUseError } from '../../errors';
 import { DTOUser, FormUpdateUserParams, User } from '../../types';
-import { internalServerError, ok } from '../helpers';
+import { checkIfIdIsValid, internalServerError, ok } from '../helpers';
 import {
     allFieldAreEmptyResponse,
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
-    checkIfUserIdIsValid,
     emailAlreadyInUseResponse,
     invalidEmailResponse,
     invalidPasswordResponse,
@@ -32,7 +31,7 @@ export class UpdateUserController {
         try {
             const userId = httpRequest.params.userId as string;
 
-            const isValidUUID = checkIfUserIdIsValid(userId);
+            const isValidUUID = checkIfIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 

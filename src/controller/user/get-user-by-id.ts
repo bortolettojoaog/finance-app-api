@@ -3,7 +3,7 @@ import { UserNotFoundError } from '../../errors/user';
 import { DTOUser, User } from '../../types';
 import { internalServerError, ok } from '../helpers';
 import {
-    checkIfUserIdIsValid,
+    checkIfIdIsValid,
     invalidUserIdResponse,
     notFoundUserResponse,
     requiredIdResponse,
@@ -26,7 +26,7 @@ export class GetUserByIdController {
 
             if (!userId) return requiredIdResponse();
 
-            const isValidUUID = checkIfUserIdIsValid(userId);
+            const isValidUUID = checkIfIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 

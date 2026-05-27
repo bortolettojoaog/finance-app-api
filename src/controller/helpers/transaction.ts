@@ -43,7 +43,3 @@ export const checkTransactionAmountIsCurrency = (amount: number) => {
         decimal_separator: '.',
     });
 };
-
-export const checkIfTransactionIdIsValid = (userId: string): boolean => {
-    return validator.isUUID(userId);
-};

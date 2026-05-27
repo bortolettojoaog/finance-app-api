@@ -7,7 +7,7 @@ import {
 } from '../../types';
 import {
     badRequest,
-    checkIfUserIdIsValid,
+    checkIfIdIsValid,
     checkTransactionAmount,
     checkTransactionAmountIsCurrency,
     checkTransactionType,
@@ -41,7 +41,7 @@ export class CreateTransactionController {
 
             if (!userId) return requiredIdResponse();
 
-            const isValidUUID = checkIfUserIdIsValid(userId);
+            const isValidUUID = checkIfIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 

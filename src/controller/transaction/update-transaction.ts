@@ -7,7 +7,7 @@ import {
 } from '../../types';
 import {
     allFieldAreEmptyResponse,
-    checkIfTransactionIdIsValid,
+    checkIfIdIsValid,
     checkTransactionAmount,
     checkTransactionAmountIsCurrency,
     checkTransactionType,
@@ -39,7 +39,7 @@ export class UpdateTransactionController {
         try {
             const transactionId = httpRequest.params.transactionId as string;
 
-            const isValidUUID = checkIfTransactionIdIsValid(transactionId);
+            const isValidUUID = checkIfIdIsValid(transactionId);
 
             if (!isValidUUID) return invalidTransactionIdResponse();
 

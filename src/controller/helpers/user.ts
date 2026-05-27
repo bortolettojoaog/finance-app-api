@@ -42,7 +42,3 @@ export const checkIfPasswordIsValid = (password: string): boolean => {
 export const checkIfEmailIsValid = (email: string): boolean => {
     return validator.isEmail(email);
 };
-
-export const checkIfUserIdIsValid = (userId: string): boolean => {
-    return validator.isUUID(userId);
-};

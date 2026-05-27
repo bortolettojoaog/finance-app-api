@@ -1,6 +1,6 @@
 import { DeletedTransaction, DTODeletedTransaction } from '../../types';
 import {
-    checkIfTransactionIdIsValid,
+    checkIfIdIsValid,
     internalServerError,
     invalidTransactionIdResponse,
     ok,
@@ -25,7 +25,7 @@ export class CheckDeletedTransactionController {
         try {
             const transactionId = httpRequest.params.transactionId as string;
 
-            const isValidUUID = checkIfTransactionIdIsValid(transactionId);
+            const isValidUUID = checkIfIdIsValid(transactionId);
 
             if (!isValidUUID) return invalidTransactionIdResponse();
 

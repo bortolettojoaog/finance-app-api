@@ -1,6 +1,6 @@
 import { DeletedUser, DTODeletedUser } from '../../types/user';
 import {
-    checkIfUserIdIsValid,
+    checkIfIdIsValid,
     internalServerError,
     invalidUserIdResponse,
     ok,
@@ -23,7 +23,7 @@ export class CheckDeletedUserController {
         try {
             const userId = httpRequest.params.userId as string;
 
-            const isValidUUID = checkIfUserIdIsValid(userId);
+            const isValidUUID = checkIfIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 

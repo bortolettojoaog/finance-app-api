@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { UserNotFoundError } from '../../errors';
 import { DTOUser, User } from '../../types';
 import {
-    checkIfUserIdIsValid,
+    checkIfIdIsValid,
     internalServerError,
     invalidUserIdResponse,
     notFound,
@@ -24,7 +24,7 @@ export class DeleteUserController {
         try {
             const userId = httpRequest.params.userId as string;
 
-            const isValidUUID = checkIfUserIdIsValid(userId);
+            const isValidUUID = checkIfIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 
