@@ -1,11 +1,11 @@
 import {
+    CheckDeletedUserController,
     CreateUserController,
     DeleteUserController,
     GetUserByIdController,
     GetUserByMailController,
     UpdateUserController,
-} from '../../controller';
-import { CheckDeletedUserController } from '../../controller/check-deleted-user';
+} from '../../controller/user';
 import {
     PostgresCheckDeletedUserRepository,
     PostgresCreateUserRepository,

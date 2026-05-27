@@ -1,13 +1,13 @@
 import { Request } from 'express';
-import { UserNotFoundError } from '../errors';
-import { DTOUser, User } from '../types';
+import { UserNotFoundError } from '../../errors';
+import { DTOUser, User } from '../../types';
 import {
     checkIfUserIdIsValid,
     internalServerError,
     invalidUserIdResponse,
     notFound,
     ok,
-} from './helpers';
+} from '../helpers';
 
 interface IDeleteUserController {
     execute(userId: string): Promise<User>;

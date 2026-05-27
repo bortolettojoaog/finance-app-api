@@ -1,14 +1,14 @@
 import { Request } from 'express';
-import { EmailAlreadyInUseError } from '../errors';
-import { DTOUser, FormCreateUserParams, User } from '../types';
-import { badRequest, created, internalServerError } from './helpers';
+import { EmailAlreadyInUseError } from '../../errors';
+import { DTOUser, FormCreateUserParams, User } from '../../types';
+import { badRequest, created, internalServerError } from '../helpers';
 import {
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
     emailAlreadyInUseResponse,
     invalidEmailResponse,
     invalidPasswordResponse,
-} from './helpers/user';
+} from '../helpers/user';
 
 interface ICreateUserUseCase {
     execute(formCreateUserParams: FormCreateUserParams): Promise<User>;

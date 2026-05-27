@@ -1,7 +1,7 @@
 import { Request } from 'express';
-import { EmailAlreadyInUseError } from '../errors';
-import { DTOUser, FormUpdateUserParams, User } from '../types';
-import { internalServerError, ok } from './helpers';
+import { EmailAlreadyInUseError } from '../../errors';
+import { DTOUser, FormUpdateUserParams, User } from '../../types';
+import { internalServerError, ok } from '../helpers';
 import {
     allFieldAreEmptyResponse,
     checkIfEmailIsValid,
@@ -12,7 +12,7 @@ import {
     invalidPasswordResponse,
     invalidUserIdResponse,
     someFieldNotAllowedResponse,
-} from './helpers/user';
+} from '../helpers/user';
 
 interface IUpdateUserController {
     execute(

@@ -1,10 +1,10 @@
-import { DeletedUser, DTODeletedUser } from '../types/user';
+import { DeletedUser, DTODeletedUser } from '../../types/user';
 import {
     checkIfUserIdIsValid,
     internalServerError,
     invalidUserIdResponse,
     ok,
-} from './helpers';
+} from '../helpers';
 
 import { Request } from 'express';
 

@@ -1,12 +1,12 @@
 import { Request } from 'express';
-import { UserNotFoundError } from '../errors/user';
-import { DTOUser, User } from '../types';
-import { internalServerError, ok } from './helpers/';
+import { UserNotFoundError } from '../../errors/user';
+import { DTOUser, User } from '../../types';
+import { internalServerError, ok } from '../helpers';
 import {
     checkIfEmailIsValid,
     invalidEmailResponse,
     notFoundUserResponse,
-} from './helpers/user';
+} from '../helpers/user';
 
 interface IGetUserByMailController {
     execute(email: string): Promise<User | null>;

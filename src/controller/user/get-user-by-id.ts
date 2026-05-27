@@ -1,13 +1,13 @@
 import { Request } from 'express';
-import { UserNotFoundError } from '../errors/user';
-import { DTOUser, User } from '../types';
-import { internalServerError, ok } from './helpers';
+import { UserNotFoundError } from '../../errors/user';
+import { DTOUser, User } from '../../types';
+import { internalServerError, ok } from '../helpers';
 import {
     checkIfUserIdIsValid,
     invalidUserIdResponse,
     notFoundUserResponse,
     requiredIdResponse,
-} from './helpers/user';
+} from '../helpers/user';
 
 interface IGetUserByIdUseCase {
     execute(userId: string): Promise<User>;
