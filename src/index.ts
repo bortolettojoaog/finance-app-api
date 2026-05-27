@@ -8,7 +8,10 @@ import {
     makeGetUserByMailController,
     makeUpdateUserController,
 } from './factories';
-import { makeCreateTransactionController } from './factories/controller/transaction';
+import {
+    makeCreateTransactionController,
+    makeGetTransactionByIdController,
+} from './factories/controller/transaction';
 
 const app = express();
 
@@ -86,6 +89,18 @@ app.post(
 
         const { status_code, body, error } =
             await factoryCreateTransactionController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.get(
+    '/api/transactions/:transactionId',
+    async (request: Request, response: Response) => {
+        const factoryGetTransactionById = makeGetTransactionByIdController();
+
+        const { status_code, body, error } =
+            await factoryGetTransactionById.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
