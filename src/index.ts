@@ -11,6 +11,7 @@ import {
 import {
     makeCreateTransactionController,
     makeGetTransactionByIdController,
+    makeUpdateTransactionController,
 } from './factories/controller/transaction';
 
 const app = express();
@@ -97,10 +98,24 @@ app.post(
 app.get(
     '/api/transactions/:transactionId',
     async (request: Request, response: Response) => {
-        const factoryGetTransactionById = makeGetTransactionByIdController();
+        const factoryGetTransactionByIdController =
+            makeGetTransactionByIdController();
 
         const { status_code, body, error } =
-            await factoryGetTransactionById.execute(request);
+            await factoryGetTransactionByIdController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.patch(
+    '/api/transactions/:trasactionId',
+    async (request: Request, response: Response) => {
+        const factoryUpdateTransactionController =
+            makeUpdateTransactionController();
+
+        const { status_code, body, error } =
+            await factoryUpdateTransactionController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
