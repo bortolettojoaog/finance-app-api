@@ -1,81 +1,41 @@
 import 'dotenv/config.js';
 import express, { Request, Response } from 'express';
 import {
-    CreateUserController,
-    GetUserByIdController,
-    GetUserByMailController,
-    UpdateUserController,
-} from './controller';
-import { CheckDeletedUserController } from './controller/check-deleted-user';
-import { DeleteUserController } from './controller/delete-user';
-import {
-    PostgresCheckDeletedUserRepository,
-    PostgresCreateUserRepository,
-    PostgresDeleteUserRepository,
-    PostgresGetUserByIdRepository,
-    PostgresGetUserByMailRepository,
-    PostgresUpdateUserRepository,
-} from './repositories/postgres';
-import {
-    CreateUserUseCase,
-    DeleteUserUseCase,
-    GetUserByIdUseCase,
-    GetUserByMailUseCase,
-    UpdateUserUseCase,
-} from './use-cases';
+    makeCheckDeletedUserController,
+    makeCreateUserController,
+    makeDeleteUserController,
+    makeGetUserByIdController,
+    makeGetUserByMailController,
+    makeUpdateUserController,
+} from './factories';
 
 const app = express();
 
 app.use(express.json());
 
 app.post('/api/users', async (request: Request, response: Response) => {
-    const postgresCreateUserRepository = new PostgresCreateUserRepository();
-
-    const postgresGetUserByMailRepository =
-        new PostgresGetUserByMailRepository();
-
-    const createUserUseCase = new CreateUserUseCase(
-        postgresCreateUserRepository,
-        postgresGetUserByMailRepository,
-    );
-
-    const createUserController = new CreateUserController(createUserUseCase);
+    const factoryUserController = makeCreateUserController();
 
     const { status_code, body, error } =
-        await createUserController.execute(request);
+        await factoryUserController.execute(request);
 
     return response.status(status_code).json(error ? { error } : body);
 });
 
 app.get('/api/users/:userId', async (request: Request, response: Response) => {
-    const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository();
-
-    const getUserByIdUseCase = new GetUserByIdUseCase(
-        postgresGetUserByIdRepository,
-    );
-
-    const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
+    const factoryGetUserByIdController = makeGetUserByIdController();
 
     const { status_code, body, error } =
-        await getUserByIdController.execute(request);
+        await factoryGetUserByIdController.execute(request);
 
     return response.status(status_code).json(error ? { error } : body);
 });
 
 app.get('/api/users', async (request: Request, response: Response) => {
-    const postgresGetUserByMailRepository =
-        new PostgresGetUserByMailRepository();
-
-    const getUserByMailUseCase = new GetUserByMailUseCase(
-        postgresGetUserByMailRepository,
-    );
-
-    const getUserByMailController = new GetUserByMailController(
-        getUserByMailUseCase,
-    );
+    const factoryGetUserByMailController = makeGetUserByMailController();
 
     const { status_code, body, error } =
-        await getUserByMailController.execute(request);
+        await factoryGetUserByMailController.execute(request);
 
     return response.status(status_code).json(error ? { error } : body);
 });
@@ -83,15 +43,11 @@ app.get('/api/users', async (request: Request, response: Response) => {
 app.get(
     '/api/users/:userId/active',
     async (request: Request, response: Response) => {
-        const postgresCheckDeletedUserRepository =
-            new PostgresCheckDeletedUserRepository();
-
-        const checkDeletedUserController = new CheckDeletedUserController(
-            postgresCheckDeletedUserRepository,
-        );
+        const factoryCheckDeletedUserController =
+            makeCheckDeletedUserController();
 
         const { status_code, body, error } =
-            await checkDeletedUserController.execute(request);
+            await factoryCheckDeletedUserController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
@@ -100,18 +56,10 @@ app.get(
 app.patch(
     '/api/users/:userId',
     async (request: Request, response: Response) => {
-        const postgresUpdateUserRepository = new PostgresUpdateUserRepository();
-
-        const updateUserUseCase = new UpdateUserUseCase(
-            postgresUpdateUserRepository,
-        );
-
-        const updateUserController = new UpdateUserController(
-            updateUserUseCase,
-        );
+        const factoryUpdateUserController = makeUpdateUserController();
 
         const { status_code, body, error } =
-            await updateUserController.execute(request);
+            await factoryUpdateUserController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
@@ -120,26 +68,10 @@ app.patch(
 app.delete(
     '/api/users/:userId',
     async (request: Request, response: Response) => {
-        const postgresDeleteUserRepository = new PostgresDeleteUserRepository();
-
-        const postgresGetUserByIdRepository =
-            new PostgresGetUserByIdRepository();
-
-        const checkDeletedUserRepository =
-            new PostgresCheckDeletedUserRepository();
-
-        const deleteUserUseCase = new DeleteUserUseCase(
-            postgresDeleteUserRepository,
-            postgresGetUserByIdRepository,
-            checkDeletedUserRepository,
-        );
-
-        const deleteUserController = new DeleteUserController(
-            deleteUserUseCase,
-        );
+        const factoryDeleteUserController = makeDeleteUserController();
 
         const { status_code, body, error } =
-            await deleteUserController.execute(request);
+            await factoryDeleteUserController.execute(request);
         return response.status(status_code).json(error ? { error } : body);
     },
 );
