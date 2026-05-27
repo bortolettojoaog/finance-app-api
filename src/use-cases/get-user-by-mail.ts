@@ -2,7 +2,7 @@ import { UserNotFoundError } from '../errors/user';
 import { User } from '../types';
 
 interface IGetUserByMailRepository {
-    execute(email: string): Promise<User>;
+    execute(email: string): Promise<User | null>;
 }
 
 export class GetUserByMailUseCase {
@@ -12,7 +12,7 @@ export class GetUserByMailUseCase {
         this.getUserByMailRepository = getUserByMailRepository;
     }
 
-    async execute(email: string): Promise<User> {
+    async execute(email: string): Promise<User | null> {
         const user = await this.getUserByMailRepository.execute(email);
 
         if (!user) throw new UserNotFoundError();

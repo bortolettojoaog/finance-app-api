@@ -11,6 +11,7 @@ import {
     PostgresCreateUserRepository,
     PostgresDeleteUserRepository,
     PostgresGetUserByIdRepository,
+    PostgresGetUserByMailRepository,
     PostgresUpdateUserRepository,
 } from './repositories/postgres';
 import {
@@ -56,7 +57,8 @@ app.get('/api/users/:userId', async (request: Request, response: Response) => {
 });
 
 app.get('/api/users', async (request: Request, response: Response) => {
-    const postgresGetUserByMailRepository = new PostgresGetUserByIdRepository();
+    const postgresGetUserByMailRepository =
+        new PostgresGetUserByMailRepository();
 
     const getUserByMailUseCase = new GetUserByMailUseCase(
         postgresGetUserByMailRepository,
