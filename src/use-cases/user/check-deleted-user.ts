@@ -1,4 +1,4 @@
-import { DeletedUser } from '../types';
+import { DeletedUser } from '../../types';
 
 interface ICheckDeletedUserUseCase {
     execute(userId: string): Promise<DeletedUser>;

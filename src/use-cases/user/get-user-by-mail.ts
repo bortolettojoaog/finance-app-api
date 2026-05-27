@@ -1,5 +1,5 @@
-import { UserNotFoundError } from '../errors/user';
-import { User } from '../types';
+import { UserNotFoundError } from '../../errors';
+import { User } from '../../types';
 
 interface IGetUserByMailRepository {
     execute(email: string): Promise<User | null>;

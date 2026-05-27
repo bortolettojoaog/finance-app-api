@@ -1,5 +1,5 @@
-import { UserNotFoundError } from '../errors';
-import { DeletedUser, User } from '../types';
+import { UserNotFoundError } from '../../errors';
+import { DeletedUser, User } from '../../types';
 
 interface IDeleteUserUseCase {
     execute(userId: string): Promise<User>;

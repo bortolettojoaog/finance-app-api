@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { EmailAlreadyInUseError } from '../errors';
-import { FormCreateUserParams, User } from '../types';
-import { CreateUserParams } from '../types/';
+import { EmailAlreadyInUseError } from '../../errors';
+import { CreateUserParams, FormCreateUserParams, User } from '../../types';
 
 interface ICreateUserRepository {
     execute(createUserParams: CreateUserParams): Promise<User>;
