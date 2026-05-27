@@ -1,3 +1,4 @@
+import validator from 'validator';
 import { TransactionType } from '../../types';
 import { badRequest } from './http';
 
@@ -7,7 +8,13 @@ export const invalidTransactionTypeResponse = () => {
     );
 };
 
-export const invalidTransactionAmountResponse = () => {
+export const invalidTransactionAmount = () => {
+    return badRequest(
+        'Invalid transaction amount. Amount must be a currency value',
+    );
+};
+
+export const negativeOrNaNTransactionAmountResponse = () => {
     return badRequest(
         'Invalid transaction amount. Amount must be a positive number.',
     );
@@ -18,9 +25,13 @@ export const checkTransactionType = (type: string) => {
 };
 
 export const checkTransactionAmount = (amount: number) => {
-    return (
-        !isNaN(amount) &&
-        amount > 0 &&
-        Math.round(amount * 100) === amount * 100
-    );
+    return !isNaN(amount) && amount > 0;
+};
+
+export const checkTransactionAmountIsCurrency = (amount: number) => {
+    return validator.isCurrency(amount.toString(), {
+        digits_after_decimal: [2],
+        allow_decimal: false,
+        decimal_separator: '.',
+    });
 };
