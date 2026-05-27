@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { UserNotFoundError } from '../errors';
-import { DTOUser } from '../types';
-import { DeleteUserUseCase } from '../use-cases';
+import { DTOUser, User } from '../types';
 import {
     checkIfUserIdIsValid,
     internalServerError,
@@ -10,7 +9,17 @@ import {
     ok,
 } from './helpers';
 
+interface IDeleteUserController {
+    execute(userId: string): Promise<User>;
+}
+
 export class DeleteUserController {
+    private readonly deleteUserUseCase: IDeleteUserController;
+
+    constructor(deleteUserUseCase: IDeleteUserController) {
+        this.deleteUserUseCase = deleteUserUseCase;
+    }
+
     async execute(request: Request): Promise<DTOUser> {
         try {
             const userId = request.params.userId as string;
@@ -19,9 +28,7 @@ export class DeleteUserController {
 
             if (!isValidUUID) return invalidUserIdResponse();
 
-            const deleteUserUseCase = new DeleteUserUseCase();
-
-            const deletedUser = await deleteUserUseCase.execute(userId);
+            const deletedUser = await this.deleteUserUseCase.execute(userId);
 
             return ok(deletedUser);
         } catch (error) {

@@ -5,9 +5,18 @@ import {
 } from '../repositories/postgres';
 import { User } from '../types';
 
+interface IDeleteUserUseCase {
+    execute(userId: string): Promise<User>;
+}
+
 export class DeleteUserUseCase {
+    private readonly postgresDeleteUserRepository: PostgresDeleteUserRepository;
+
+    constructor(postgresDeleteUserRepository: IDeleteUserUseCase) {
+        this.postgresDeleteUserRepository = postgresDeleteUserRepository;
+    }
+
     async execute(userId: string): Promise<User> {
-        const postgresDeleteUserRepository = new PostgresDeleteUserRepository();
         const postgresGetUserByIdRepository =
             new PostgresGetUserByIdRepository();
 
@@ -18,13 +27,14 @@ export class DeleteUserUseCase {
         }
 
         const isAlreadyDeleted =
-            await postgresDeleteUserRepository.execute(userId);
+            await this.postgresDeleteUserRepository.execute(userId);
 
         if (isAlreadyDeleted) {
             throw new UserNotFoundError();
         }
 
-        const deletedUser = await postgresDeleteUserRepository.execute(userId);
+        const deletedUser =
+            await this.postgresDeleteUserRepository.execute(userId);
 
         return deletedUser;
     }
