@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { EmailAlreadyInUseError } from '../errors';
-import { DTOUser, FormUpdateUserParams } from '../types';
-import { UpdateUserUseCase } from '../use-cases';
+import { DTOUser, FormUpdateUserParams, User } from '../types';
 import { internalServerError, ok } from './helpers';
 import {
     allFieldAreEmptyResponse,
@@ -15,7 +14,20 @@ import {
     someFieldNotAllowedResponse,
 } from './helpers/user';
 
+interface IUpdateUserController {
+    execute(
+        userId: string,
+        updateUserParams: Partial<FormUpdateUserParams>,
+    ): Promise<User>;
+}
+
 export class UpdateUserController {
+    private readonly updateUserUseCase: IUpdateUserController;
+
+    constructor(updateUserUseCase: IUpdateUserController) {
+        this.updateUserUseCase = updateUserUseCase;
+    }
+
     async execute(request: Request): Promise<DTOUser> {
         try {
             const userId = request.params.userId as string;
@@ -55,9 +67,10 @@ export class UpdateUserController {
                 if (!isEmailValid) return invalidEmailResponse();
             }
 
-            const updateUserUseCase = new UpdateUserUseCase();
-
-            const updatedUser = await updateUserUseCase.execute(userId, params);
+            const updatedUser = await this.updateUserUseCase.execute(
+                userId,
+                params,
+            );
 
             return ok(updatedUser);
         } catch (error) {
