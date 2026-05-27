@@ -1,5 +1,5 @@
 import { UserNotFoundError } from '../errors';
-import { User } from '../types';
+import { DeletedUser, User } from '../types';
 
 interface IDeleteUserUseCase {
     execute(userId: string): Promise<User>;
@@ -10,7 +10,7 @@ interface IGetUserByIdRepository {
 }
 
 interface ICheckDeletedUserRepository {
-    execute(userId: string): Promise<boolean>;
+    execute(userId: string): Promise<DeletedUser>;
 }
 
 export class DeleteUserUseCase {
