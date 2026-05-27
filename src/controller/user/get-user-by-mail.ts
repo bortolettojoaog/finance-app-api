@@ -19,9 +19,9 @@ export class GetUserByMailController {
         this.getUserByMailUseCase = getUserByMailUseCase;
     }
 
-    async execute(request: Request): Promise<DTOUser> {
+    async execute(httpRequest: Request): Promise<DTOUser> {
         try {
-            const userMail = request.query.email as string;
+            const userMail = httpRequest.query.email as string;
 
             const isValidEmail = checkIfEmailIsValid(userMail);
 

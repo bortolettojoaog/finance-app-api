@@ -20,9 +20,9 @@ export class GetUserByIdController {
         this.getUserByIdUseCase = getUserByIdUseCase;
     }
 
-    async execute(request: Request): Promise<DTOUser> {
+    async execute(httpRequest: Request): Promise<DTOUser> {
         try {
-            const userId = request.params.userId as string;
+            const userId = httpRequest.params.userId as string;
 
             if (!userId) return requiredIdResponse();
 

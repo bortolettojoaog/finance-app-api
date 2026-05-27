@@ -19,9 +19,9 @@ export class CheckDeletedUserController {
         this.checkDeletedUserUseCase = checkDeletedUserUseCase;
     }
 
-    async execute(request: Request): Promise<DTODeletedUser> {
+    async execute(httpRequest: Request): Promise<DTODeletedUser> {
         try {
-            const userId = request.params.userId as string;
+            const userId = httpRequest.params.userId as string;
 
             const isValidUUID = checkIfUserIdIsValid(userId);
 

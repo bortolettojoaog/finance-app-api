@@ -28,19 +28,20 @@ export class UpdateUserController {
         this.updateUserUseCase = updateUserUseCase;
     }
 
-    async execute(request: Request): Promise<DTOUser> {
+    async execute(httpRequest: Request): Promise<DTOUser> {
         try {
-            const userId = request.params.userId as string;
+            const userId = httpRequest.params.userId as string;
 
             const isValidUUID = checkIfUserIdIsValid(userId);
 
             if (!isValidUUID) return invalidUserIdResponse();
 
-            const allFieldsAreEmpty = Object.keys(request.body).length === 0;
+            const allFieldsAreEmpty =
+                Object.keys(httpRequest.body).length === 0;
 
             if (allFieldsAreEmpty) return allFieldAreEmptyResponse();
 
-            const params = request.body as FormUpdateUserParams;
+            const params = httpRequest.body as FormUpdateUserParams;
 
             const allowedFields = [
                 'first_name',
