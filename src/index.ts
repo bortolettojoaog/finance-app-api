@@ -8,6 +8,7 @@ import {
     makeGetUserByMailController,
     makeUpdateUserController,
 } from './factories';
+import { makeCreateTransactionController } from './factories/controller/transaction';
 
 const app = express();
 
@@ -72,6 +73,20 @@ app.delete(
 
         const { status_code, body, error } =
             await factoryDeleteUserController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.post(
+    '/api/transactions/:userId',
+    async (request: Request, response: Response) => {
+        const factoryCreateTransactionController =
+            makeCreateTransactionController();
+
+        const { status_code, body, error } =
+            await factoryCreateTransactionController.execute(request);
+
         return response.status(status_code).json(error ? { error } : body);
     },
 );
