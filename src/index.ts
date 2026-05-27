@@ -16,6 +16,7 @@ import {
     CreateUserUseCase,
     DeleteUserUseCase,
     GetUserByIdUseCase,
+    GetUserByMailUseCase,
 } from './use-cases';
 
 const app = express();
@@ -53,7 +54,15 @@ app.get('/api/users/:userId', async (request: Request, response: Response) => {
 });
 
 app.get('/api/users', async (request: Request, response: Response) => {
-    const getUserByMailController = new GetUserByMailController();
+    const postgresGetUserByMailRepository = new PostgresGetUserByIdRepository();
+
+    const getUserByMailUseCase = new GetUserByMailUseCase(
+        postgresGetUserByMailRepository,
+    );
+
+    const getUserByMailController = new GetUserByMailController(
+        getUserByMailUseCase,
+    );
 
     const { status_code, body, error } =
         await getUserByMailController.execute(request);

@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { UserNotFoundError } from '../errors/user';
-import { DTOUser } from '../types';
-import { GetUserByMailUseCase } from '../use-cases';
+import { DTOUser, User } from '../types';
 import { internalServerError, ok } from './helpers/';
 import {
     checkIfEmailIsValid,
@@ -9,7 +8,17 @@ import {
     notFoundUserResponse,
 } from './helpers/user';
 
+interface IGetUserByMailController {
+    execute(email: string): Promise<User>;
+}
+
 export class GetUserByMailController {
+    private readonly getUserByMailUseCase: IGetUserByMailController;
+
+    constructor(getUserByMailUseCase: IGetUserByMailController) {
+        this.getUserByMailUseCase = getUserByMailUseCase;
+    }
+
     async execute(request: Request): Promise<DTOUser> {
         try {
             const userMail = request.query.email as string;
@@ -18,9 +27,7 @@ export class GetUserByMailController {
 
             if (!isValidEmail) return invalidEmailResponse();
 
-            const getUserByMailUseCase = new GetUserByMailUseCase();
-
-            const user = await getUserByMailUseCase.execute(userMail);
+            const user = await this.getUserByMailUseCase.execute(userMail);
 
             return ok(user);
         } catch (error) {

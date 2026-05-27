@@ -1,12 +1,19 @@
 import { UserNotFoundError } from '../errors/user';
-import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
 import { User } from '../types';
 
-export class GetUserByMailUseCase {
-    async execute(email: string): Promise<User> {
-        const getUserByMailRepository = new PostgresGetUserByMailRepository();
+interface IGetUserByMailRepository {
+    execute(email: string): Promise<User>;
+}
 
-        const user = await getUserByMailRepository.execute(email);
+export class GetUserByMailUseCase {
+    private readonly getUserByMailRepository: IGetUserByMailRepository;
+
+    constructor(getUserByMailRepository: IGetUserByMailRepository) {
+        this.getUserByMailRepository = getUserByMailRepository;
+    }
+
+    async execute(email: string): Promise<User> {
+        const user = await this.getUserByMailRepository.execute(email);
 
         if (!user) throw new UserNotFoundError();
 
