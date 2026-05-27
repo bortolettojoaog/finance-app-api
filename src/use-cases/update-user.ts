@@ -1,10 +1,22 @@
 import bcrypt from 'bcrypt';
 import { EmailAlreadyInUseError } from '../errors';
 import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
-import { PostgresUpdateUserRepository } from '../repositories/postgres/update-user';
 import { FormCreateUserParams, User } from '../types';
 
+interface IUpdateUserRepository {
+    execute(
+        userId: string,
+        updateUserParams: Partial<FormCreateUserParams>,
+    ): Promise<User>;
+}
+
 export class UpdateUserUseCase {
+    private readonly postgresUpdateUserRepository: IUpdateUserRepository;
+
+    constructor(postgresUpdateUserRepository: IUpdateUserRepository) {
+        this.postgresUpdateUserRepository = postgresUpdateUserRepository;
+    }
+
     async execute(
         userId: string,
         updateUserParams: Partial<FormCreateUserParams>,
@@ -36,9 +48,7 @@ export class UpdateUserUseCase {
             userTobeUpdated.password = hashedPassword;
         }
 
-        const postgresUpdateUserRepository = new PostgresUpdateUserRepository();
-
-        const updatedUser = await postgresUpdateUserRepository.execute(
+        const updatedUser = await this.postgresUpdateUserRepository.execute(
             userId,
             userTobeUpdated,
         );

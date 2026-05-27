@@ -1,30 +1,50 @@
 import { UserNotFoundError } from '../errors';
-import {
-    PostgresDeleteUserRepository,
-    PostgresGetUserByIdRepository,
-} from '../repositories/postgres';
-import { User } from '../types';
+import { DeletedUser, User } from '../types';
+
+interface IDeleteUserUseCase {
+    execute(userId: string): Promise<User>;
+}
+
+interface IGetUserByIdRepository {
+    execute(userId: string): Promise<User>;
+}
+
+interface ICheckDeletedUserRepository {
+    execute(userId: string): Promise<DeletedUser>;
+}
 
 export class DeleteUserUseCase {
-    async execute(userId: string): Promise<User> {
-        const postgresDeleteUserRepository = new PostgresDeleteUserRepository();
-        const postgresGetUserByIdRepository =
-            new PostgresGetUserByIdRepository();
+    private readonly postgresDeleteUserRepository: IDeleteUserUseCase;
+    private readonly postgresGetUserByIdRepository: IGetUserByIdRepository;
+    private readonly checkDeletedUserRepository: ICheckDeletedUserRepository;
 
-        const userExists = await postgresGetUserByIdRepository.execute(userId);
+    constructor(
+        postgresDeleteUserRepository: IDeleteUserUseCase,
+        postgresGetUserByIdRepository: IGetUserByIdRepository,
+        checkDeletedUserRepository: ICheckDeletedUserRepository,
+    ) {
+        this.postgresDeleteUserRepository = postgresDeleteUserRepository;
+        this.postgresGetUserByIdRepository = postgresGetUserByIdRepository;
+        this.checkDeletedUserRepository = checkDeletedUserRepository;
+    }
+
+    async execute(userId: string): Promise<User> {
+        const userExists =
+            await this.postgresGetUserByIdRepository.execute(userId);
 
         if (!userExists) {
             throw new UserNotFoundError();
         }
 
         const isAlreadyDeleted =
-            await postgresDeleteUserRepository.execute(userId);
+            await this.checkDeletedUserRepository.execute(userId);
 
-        if (isAlreadyDeleted) {
+        if (!isAlreadyDeleted.active) {
             throw new UserNotFoundError();
         }
 
-        const deletedUser = await postgresDeleteUserRepository.execute(userId);
+        const deletedUser =
+            await this.postgresDeleteUserRepository.execute(userId);
 
         return deletedUser;
     }

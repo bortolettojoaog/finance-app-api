@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { EmailAlreadyInUseError } from '../errors';
-import { DTOUser, FormCreateUserParams } from '../types';
-import { CreateUserUseCase } from '../use-cases';
+import { DTOUser, FormCreateUserParams, User } from '../types';
 import { badRequest, created, internalServerError } from './helpers';
 import {
     checkIfEmailIsValid,
@@ -11,7 +10,17 @@ import {
     invalidPasswordResponse,
 } from './helpers/user';
 
+interface ICreateUserUseCase {
+    execute(formCreateUserParams: FormCreateUserParams): Promise<User>;
+}
+
 export class CreateUserController {
+    private readonly createUserUseCase: ICreateUserUseCase;
+
+    constructor(createUserUseCase: ICreateUserUseCase) {
+        this.createUserUseCase = createUserUseCase;
+    }
+
     async execute(httpRequest: Request): Promise<DTOUser> {
         try {
             const params: FormCreateUserParams = httpRequest.body;
@@ -38,9 +47,7 @@ export class CreateUserController {
 
             if (!isEmailValid) return invalidEmailResponse();
 
-            const createUserUseCase = new CreateUserUseCase();
-
-            const createdUser = await createUserUseCase.execute(params);
+            const createdUser = await this.createUserUseCase.execute(params);
 
             return created(createdUser);
         } catch (error) {

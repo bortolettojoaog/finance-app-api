@@ -1,7 +1,6 @@
 import { Request } from 'express';
 import { UserNotFoundError } from '../errors/user';
-import { DTOUser } from '../types';
-import { GetUserByIdUseCase } from '../use-cases';
+import { DTOUser, User } from '../types';
 import { internalServerError, ok } from './helpers';
 import {
     checkIfUserIdIsValid,
@@ -10,7 +9,17 @@ import {
     requiredIdResponse,
 } from './helpers/user';
 
+interface IGetUserByIdUseCase {
+    execute(userId: string): Promise<User>;
+}
+
 export class GetUserByIdController {
+    private readonly getUserByIdUseCase: IGetUserByIdUseCase;
+
+    constructor(getUserByIdUseCase: IGetUserByIdUseCase) {
+        this.getUserByIdUseCase = getUserByIdUseCase;
+    }
+
     async execute(request: Request): Promise<DTOUser> {
         try {
             const userId = request.params.userId as string;
@@ -21,9 +30,7 @@ export class GetUserByIdController {
 
             if (!isValidUUID) return invalidUserIdResponse();
 
-            const getUserByIdUseCase = new GetUserByIdUseCase();
-
-            const user = await getUserByIdUseCase.execute(userId);
+            const user = await this.getUserByIdUseCase.execute(userId);
 
             return ok(user);
         } catch (error) {
