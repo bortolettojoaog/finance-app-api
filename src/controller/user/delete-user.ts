@@ -9,14 +9,14 @@ import {
     ok,
 } from '../helpers';
 
-interface IDeleteUserController {
+interface IDeleteUserUseCase {
     execute(userId: string): Promise<User>;
 }
 
 export class DeleteUserController {
-    private readonly deleteUserUseCase: IDeleteUserController;
+    private readonly deleteUserUseCase: IDeleteUserUseCase;
 
-    constructor(deleteUserUseCase: IDeleteUserController) {
+    constructor(deleteUserUseCase: IDeleteUserUseCase) {
         this.deleteUserUseCase = deleteUserUseCase;
     }
 

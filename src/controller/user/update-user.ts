@@ -14,7 +14,7 @@ import {
     someFieldNotAllowedResponse,
 } from '../helpers/user';
 
-interface IUpdateUserController {
+interface IUpdateUserUseCase {
     execute(
         userId: string,
         updateUserParams: Partial<FormUpdateUserParams>,
@@ -22,9 +22,9 @@ interface IUpdateUserController {
 }
 
 export class UpdateUserController {
-    private readonly updateUserUseCase: IUpdateUserController;
+    private readonly updateUserUseCase: IUpdateUserUseCase;
 
-    constructor(updateUserUseCase: IUpdateUserController) {
+    constructor(updateUserUseCase: IUpdateUserUseCase) {
         this.updateUserUseCase = updateUserUseCase;
     }
 

@@ -8,14 +8,14 @@ import {
 
 import { Request } from 'express';
 
-interface ICheckDeletedUserController {
+interface ICheckDeletedUserUseCase {
     execute(userId: string): Promise<DeletedUser>;
 }
 
 export class CheckDeletedUserController {
-    private readonly checkDeletedUserUseCase: ICheckDeletedUserController;
+    private readonly checkDeletedUserUseCase: ICheckDeletedUserUseCase;
 
-    constructor(checkDeletedUserUseCase: ICheckDeletedUserController) {
+    constructor(checkDeletedUserUseCase: ICheckDeletedUserUseCase) {
         this.checkDeletedUserUseCase = checkDeletedUserUseCase;
     }
 

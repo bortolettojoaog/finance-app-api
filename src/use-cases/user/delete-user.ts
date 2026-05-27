@@ -1,7 +1,7 @@
 import { UserNotFoundError } from '../../errors';
 import { DeletedUser, User } from '../../types';
 
-interface IDeleteUserUseCase {
+interface IDeleteUserRepository {
     execute(userId: string): Promise<User>;
 }
 
@@ -14,12 +14,12 @@ interface ICheckDeletedUserRepository {
 }
 
 export class DeleteUserUseCase {
-    private readonly postgresDeleteUserRepository: IDeleteUserUseCase;
+    private readonly postgresDeleteUserRepository: IDeleteUserRepository;
     private readonly postgresGetUserByIdRepository: IGetUserByIdRepository;
     private readonly checkDeletedUserRepository: ICheckDeletedUserRepository;
 
     constructor(
-        postgresDeleteUserRepository: IDeleteUserUseCase,
+        postgresDeleteUserRepository: IDeleteUserRepository,
         postgresGetUserByIdRepository: IGetUserByIdRepository,
         checkDeletedUserRepository: ICheckDeletedUserRepository,
     ) {

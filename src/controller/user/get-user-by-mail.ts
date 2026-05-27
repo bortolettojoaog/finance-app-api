@@ -8,14 +8,14 @@ import {
     notFoundUserResponse,
 } from '../helpers/user';
 
-interface IGetUserByMailController {
+interface IGetUserByMailUseCase {
     execute(email: string): Promise<User | null>;
 }
 
 export class GetUserByMailController {
-    private readonly getUserByMailUseCase: IGetUserByMailController;
+    private readonly getUserByMailUseCase: IGetUserByMailUseCase;
 
-    constructor(getUserByMailUseCase: IGetUserByMailController) {
+    constructor(getUserByMailUseCase: IGetUserByMailUseCase) {
         this.getUserByMailUseCase = getUserByMailUseCase;
     }
 

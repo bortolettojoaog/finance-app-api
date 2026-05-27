@@ -1,13 +1,13 @@
 import { DeletedUser } from '../../types';
 
-interface ICheckDeletedUserUseCase {
+interface ICheckDeletedRepository {
     execute(userId: string): Promise<DeletedUser>;
 }
 
 export class CheckDeletedUserUseCase {
-    readonly postgresCheckDeletedUserRepository: ICheckDeletedUserUseCase;
+    readonly postgresCheckDeletedUserRepository: ICheckDeletedRepository;
 
-    constructor(postgresCheckDeletedUserRepository: ICheckDeletedUserUseCase) {
+    constructor(postgresCheckDeletedUserRepository: ICheckDeletedRepository) {
         this.postgresCheckDeletedUserRepository =
             postgresCheckDeletedUserRepository;
     }
