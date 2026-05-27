@@ -9,7 +9,7 @@ import {
 } from './helpers/user';
 
 interface IGetUserByMailController {
-    execute(email: string): Promise<User>;
+    execute(email: string): Promise<User | null>;
 }
 
 export class GetUserByMailController {
