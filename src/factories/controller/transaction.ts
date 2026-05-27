@@ -2,8 +2,10 @@ import {
     GetTransactionByIdController,
     UpdateTransactionController,
 } from '../../controller/transaction';
+import { CheckDeletedTransactionController } from '../../controller/transaction/check-deleted-transaction';
 import { CreateTransactionController } from '../../controller/transaction/create-transaction';
 import {
+    PostgresCheckDeletedTransactionRepository,
     PostgresCheckDeletedUserRepository,
     PostgresCreateTransactionRepository,
     PostgresGetTransactionByIdRepository,
@@ -36,6 +38,17 @@ export const makeCreateTransactionController = () => {
     );
 
     return createTransactionController;
+};
+
+export const makeCheckDeletedTransactionController = () => {
+    const postgresCheckDeletedTransactionRepository =
+        new PostgresCheckDeletedTransactionRepository();
+
+    const checkDeletedUserController = new CheckDeletedTransactionController(
+        postgresCheckDeletedTransactionRepository,
+    );
+
+    return checkDeletedUserController;
 };
 
 export const makeGetTransactionByIdController = () => {
