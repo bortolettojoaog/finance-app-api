@@ -1,6 +1,6 @@
-import { PostgresHelper } from '../../db/postgres/helper';
-import { UserNotFoundError } from '../../errors/user';
-import { FormCreateUserParams, User } from '../../types';
+import { PostgresHelper } from '../../../db/postgres/helper';
+import { UserNotFoundError } from '../../../errors';
+import { FormCreateUserParams, User } from '../../../types';
 
 export class PostgresUpdateUserRepository {
     async execute(

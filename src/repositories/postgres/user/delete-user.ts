@@ -1,5 +1,5 @@
-import { PostgresHelper } from '../../db/postgres/helper';
-import { User } from '../../types';
+import { PostgresHelper } from '../../../db/postgres/helper';
+import { User } from '../../../types';
 
 export class PostgresDeleteUserRepository {
     async execute(userId: string): Promise<User> {

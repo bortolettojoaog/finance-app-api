@@ -13,7 +13,7 @@ import {
     PostgresGetUserByIdRepository,
     PostgresGetUserByMailRepository,
     PostgresUpdateUserRepository,
-} from '../../repositories/postgres';
+} from '../../repositories/postgres/user';
 import {
     CreateUserUseCase,
     DeleteUserUseCase,

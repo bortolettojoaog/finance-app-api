@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { EmailAlreadyInUseError } from '../errors';
-import { PostgresGetUserByMailRepository } from '../repositories/postgres/get-user-by-mail';
+import { PostgresGetUserByMailRepository } from '../repositories/postgres';
 import { FormCreateUserParams, User } from '../types';
 
 interface IUpdateUserRepository {

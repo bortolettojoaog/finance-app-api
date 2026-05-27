@@ -1,5 +1,5 @@
-import { PostgresHelper } from '../../db/postgres/helper';
-import { DeletedUser } from '../../types';
+import { PostgresHelper } from '../../../db/postgres/helper';
+import { DeletedUser } from '../../../types';
 
 export class PostgresCheckDeletedUserRepository {
     async execute(userId: string): Promise<DeletedUser> {

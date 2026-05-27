@@ -1,5 +1,5 @@
-import { PostgresHelper } from '../../db/postgres/helper';
-import { User } from '../../types';
+import { PostgresHelper } from '../../../db/postgres/helper';
+import { User } from '../../../types';
 
 export class PostgresGetUserByMailRepository {
     async execute(email: string): Promise<User | null> {
