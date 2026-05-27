@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS transactions (
   date DATE NOT NULL,
   amount DECIMAL(10, 2) NOT NULL,
   type transaction_type NOT NULL,
+  active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -63,6 +64,7 @@ COMMENT ON COLUMN transactions.name IS 'Name of the transaction';
 COMMENT ON COLUMN transactions.date IS 'Date of the transaction';
 COMMENT ON COLUMN transactions.amount IS 'Amount of the transaction';
 COMMENT ON COLUMN transactions.type IS 'Type of the transaction';
+COMMENT ON COLUMN transactions.active IS 'Indicates if the transaction is active';
 COMMENT ON COLUMN transactions.created_at IS 'Timestamp when the transaction was created';
 COMMENT ON COLUMN transactions.updated_at IS 'Timestamp when the transaction was last updated';
 
