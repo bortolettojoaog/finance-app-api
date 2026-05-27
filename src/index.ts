@@ -7,6 +7,8 @@ import {
     UpdateUserController,
 } from './controller';
 import { DeleteUserController } from './controller/delete-user';
+import { PostgresGetUserByIdRepository } from './repositories/postgres';
+import { GetUserByIdUseCase } from './use-cases';
 
 const app = express();
 
@@ -22,7 +24,13 @@ app.post('/api/users', async (request: Request, response: Response) => {
 });
 
 app.get('/api/users/:userId', async (request: Request, response: Response) => {
-    const getUserByIdController = new GetUserByIdController();
+    const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository();
+
+    const getUserByIdUseCase = new GetUserByIdUseCase(
+        postgresGetUserByIdRepository,
+    );
+
+    const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
 
     const { status_code, body, error } =
         await getUserByIdController.execute(request);
