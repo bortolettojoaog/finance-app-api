@@ -3,10 +3,10 @@ import {
     PostgresDeleteUserRepository,
     PostgresGetUserByIdRepository,
 } from '../repositories/postgres';
-import { DTOUser } from '../types';
+import { User } from '../types';
 
 export class DeleteUserUseCase {
-    async execute(userId: string): Promise<DTOUser> {
+    async execute(userId: string): Promise<User> {
         const postgresDeleteUserRepository = new PostgresDeleteUserRepository();
         const postgresGetUserByIdRepository =
             new PostgresGetUserByIdRepository();
