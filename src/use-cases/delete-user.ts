@@ -39,7 +39,7 @@ export class DeleteUserUseCase {
         const isAlreadyDeleted =
             await this.checkDeletedUserRepository.execute(userId);
 
-        if (isAlreadyDeleted) {
+        if (!isAlreadyDeleted.active) {
             throw new UserNotFoundError();
         }
 
