@@ -1,37 +1,43 @@
 import { UserNotFoundError } from '../errors';
-import {
-    PostgresCheckDeletedUserRepository,
-    PostgresDeleteUserRepository,
-    PostgresGetUserByIdRepository,
-} from '../repositories/postgres';
 import { User } from '../types';
 
 interface IDeleteUserUseCase {
     execute(userId: string): Promise<User>;
 }
 
-export class DeleteUserUseCase {
-    private readonly postgresDeleteUserRepository: PostgresDeleteUserRepository;
+interface IGetUserByIdRepository {
+    execute(userId: string): Promise<User>;
+}
 
-    constructor(postgresDeleteUserRepository: IDeleteUserUseCase) {
+interface ICheckDeletedUserRepository {
+    execute(userId: string): Promise<boolean>;
+}
+
+export class DeleteUserUseCase {
+    private readonly postgresDeleteUserRepository: IDeleteUserUseCase;
+    private readonly postgresGetUserByIdRepository: IGetUserByIdRepository;
+    private readonly checkDeletedUserRepository: ICheckDeletedUserRepository;
+
+    constructor(
+        postgresDeleteUserRepository: IDeleteUserUseCase,
+        postgresGetUserByIdRepository: IGetUserByIdRepository,
+        checkDeletedUserRepository: ICheckDeletedUserRepository,
+    ) {
         this.postgresDeleteUserRepository = postgresDeleteUserRepository;
+        this.postgresGetUserByIdRepository = postgresGetUserByIdRepository;
+        this.checkDeletedUserRepository = checkDeletedUserRepository;
     }
 
     async execute(userId: string): Promise<User> {
-        const postgresGetUserByIdRepository =
-            new PostgresGetUserByIdRepository();
-
-        const userExists = await postgresGetUserByIdRepository.execute(userId);
+        const userExists =
+            await this.postgresGetUserByIdRepository.execute(userId);
 
         if (!userExists) {
             throw new UserNotFoundError();
         }
 
-        const checkDeletedUserRepository =
-            new PostgresCheckDeletedUserRepository();
-
         const isAlreadyDeleted =
-            await checkDeletedUserRepository.execute(userId);
+            await this.checkDeletedUserRepository.execute(userId);
 
         if (isAlreadyDeleted) {
             throw new UserNotFoundError();

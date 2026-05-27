@@ -8,6 +8,7 @@ import {
 } from './controller';
 import { DeleteUserController } from './controller/delete-user';
 import {
+    PostgresCheckDeletedUserRepository,
     PostgresCreateUserRepository,
     PostgresDeleteUserRepository,
     PostgresGetUserByIdRepository,
@@ -103,8 +104,16 @@ app.delete(
     async (request: Request, response: Response) => {
         const postgresDeleteUserRepository = new PostgresDeleteUserRepository();
 
+        const postgresGetUserByIdRepository =
+            new PostgresGetUserByIdRepository();
+
+        const checkDeletedUserRepository =
+            new PostgresCheckDeletedUserRepository();
+
         const deleteUserUseCase = new DeleteUserUseCase(
             postgresDeleteUserRepository,
+            postgresGetUserByIdRepository,
+            checkDeletedUserRepository,
         );
 
         const deleteUserController = new DeleteUserController(
