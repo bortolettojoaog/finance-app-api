@@ -1,6 +1,7 @@
 export * from './check-deleted-user';
 export * from './create-user';
 export * from './delete-user';
+export * from './get-user-balance';
 export * from './get-user-by-id';
 export * from './get-user-by-mail';
 export * from './update-user';
