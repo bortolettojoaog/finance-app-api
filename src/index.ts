@@ -8,6 +8,7 @@ import {
     makeDeleteTransactionController,
     makeDeleteUserController,
     makeGetTransactionByIdController,
+    makeGetUserBalanceController,
     makeGetUserByIdController,
     makeGetUserByMailController,
     makeGetUserTransactionsController,
@@ -78,6 +79,18 @@ app.delete(
 
         const { status_code, body, error } =
             await factoryDeleteUserController.execute(request);
+
+        return response.status(status_code).json(error ? { error } : body);
+    },
+);
+
+app.get(
+    '/api/users/balance/:userId',
+    async (request: Request, response: Response) => {
+        const factoryGetUserBalanceController = makeGetUserBalanceController();
+
+        const { status_code, body, error } =
+            await factoryGetUserBalanceController.execute(request);
 
         return response.status(status_code).json(error ? { error } : body);
     },
