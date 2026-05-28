@@ -1,7 +1,12 @@
 import { Request } from 'express';
 import { EmailAlreadyInUseError } from '../../errors';
 import { DTOUser, FormCreateUserParams, User } from '../../types';
-import { badRequest, created, internalServerError } from '../helpers';
+import {
+    created,
+    internalServerError,
+    missingField,
+    validateRequiredFields,
+} from '../helpers';
 import {
     checkIfEmailIsValid,
     checkIfPasswordIsValid,
@@ -31,13 +36,14 @@ export class CreateUserController {
                 'email',
                 'password',
             ];
-            for (const field of requiredFields) {
-                if (!params[field] || params[field].trim().length === 0) {
-                    return badRequest(
-                        `Field '${field}' is required and cannot be empty.`,
-                    );
-                }
-            }
+
+            const requiredFieldValidation = validateRequiredFields(
+                params,
+                requiredFields,
+            );
+
+            if (!requiredFieldValidation.requiredFieldsWereProvided)
+                return missingField(requiredFieldValidation.missingField);
 
             const isPasswordValid = checkIfPasswordIsValid(params.password);
 

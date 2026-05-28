@@ -6,7 +6,6 @@ import {
     Transaction,
 } from '../../types';
 import {
-    badRequest,
     checkIfIdIsValid,
     checkTransactionAmount,
     checkTransactionAmountIsCurrency,
@@ -15,10 +14,12 @@ import {
     invalidTransactionAmountResponse,
     invalidTransactionTypeResponse,
     invalidUserIdResponse,
+    missingField,
     negativeOrNaNTransactionAmountResponse,
     notFoundUserResponse,
     ok,
     requiredIdResponse,
+    validateRequiredFields,
 } from '../helpers';
 
 interface ICreateTransactionUseCase {
@@ -49,17 +50,13 @@ export class CreateTransactionController {
 
             const requiredFields = ['name', 'date', 'amount', 'type'];
 
-            for (const field of requiredFields) {
-                if (
-                    params[field] == null ||
-                    (typeof params[field] === 'string' &&
-                        params[field].trim().length === 0)
-                ) {
-                    return badRequest(
-                        `Field '${field}' is required and cannot be empty.`,
-                    );
-                }
-            }
+            const requiredFieldValidation = validateRequiredFields(
+                params,
+                requiredFields,
+            );
+
+            if (!requiredFieldValidation.requiredFieldsWereProvided)
+                return missingField(requiredFieldValidation.missingField);
 
             const isPositiveAmount = checkTransactionAmount(params.amount);
 
