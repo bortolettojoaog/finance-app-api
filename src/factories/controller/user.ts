@@ -2,6 +2,7 @@ import {
     CheckDeletedUserController,
     CreateUserController,
     DeleteUserController,
+    GetUserBalanceController,
     GetUserByIdController,
     GetUserByMailController,
     UpdateUserController,
@@ -10,6 +11,7 @@ import {
     PostgresCheckDeletedUserRepository,
     PostgresCreateUserRepository,
     PostgresDeleteUserRepository,
+    PostgresGetUserBalanceRepository,
     PostgresGetUserByIdRepository,
     PostgresGetUserByMailRepository,
     PostgresUpdateUserRepository,
@@ -17,6 +19,7 @@ import {
 import {
     CreateUserUseCase,
     DeleteUserUseCase,
+    GetUserBalanceUseCase,
     GetUserByIdUseCase,
     GetUserByMailUseCase,
     UpdateUserUseCase,
@@ -108,4 +111,22 @@ export const makeDeleteUserController = () => {
     const deleteUserController = new DeleteUserController(deleteUserUseCase);
 
     return deleteUserController;
+};
+
+export const makeGetUserBalanceController = () => {
+    const postgresGetUserBalanceRepository =
+        new PostgresGetUserBalanceRepository();
+
+    const postgresGetUserByIdRepository = new PostgresGetUserByIdRepository();
+
+    const getUserBalanceUseCase = new GetUserBalanceUseCase(
+        postgresGetUserBalanceRepository,
+        postgresGetUserByIdRepository,
+    );
+
+    const getUserByIdController = new GetUserBalanceController(
+        getUserBalanceUseCase,
+    );
+
+    return getUserByIdController;
 };
