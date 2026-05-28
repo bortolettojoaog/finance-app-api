@@ -33,11 +33,11 @@ export const checkTransactionType = (type: string) => {
 };
 
 export const checkTransactionAmount = (amount: number) => {
-    return !isNaN(amount) && amount > 0;
+    return !isNaN(amount) && typeof amount === 'number' && amount > 0;
 };
 
 export const checkTransactionAmountIsCurrency = (amount: number) => {
-    return validator.isCurrency(amount.toString(), {
+    return validator.isCurrency(amount.toFixed(2), {
         digits_after_decimal: [2],
         allow_negatives: false,
         decimal_separator: '.',
