@@ -17,7 +17,8 @@ export const validateRequiredFields = (
     requiredFields: string[],
 ): RequiredFieldsCheckResponse => {
     for (const field of requiredFields) {
-        const isFieldMissing = !params[field];
+        const isFieldMissing =
+            params[field] === undefined || params[field] === null;
 
         const isFieldEmpty =
             checkIfIsString(params[field]) &&
