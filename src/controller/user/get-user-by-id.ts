@@ -1,9 +1,8 @@
 import { Request } from 'express';
 import { UserNotFoundError } from '../../errors/user';
 import { DTOUser, User } from '../../types';
-import { internalServerError, ok } from '../helpers';
+import { checkIfIdIsValid, internalServerError, ok } from '../helpers';
 import {
-    checkIfIdIsValid,
     invalidUserIdResponse,
     notFoundUserResponse,
     requiredIdResponse,
